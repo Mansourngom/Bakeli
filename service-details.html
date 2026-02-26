@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Détails du service - Mansour Dev</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #fff; color: #1a1f2e; overflow-x: hidden; }
+
+    /* NAVBAR */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px; background-color: #1a1f2e; position: sticky; top: 0; z-index: 100;
+    }
+    .logo {
+      font-size: 1.4rem; font-weight: 800; background: white; color: #1a1f2e;
+      padding: 10px 22px; border-radius: 50px; display: flex; align-items: center; gap: 8px;
+    }
+    .logo-icon { color: #e8572a; }
+    .nav-links { list-style: none; display: flex; gap: 26px; }
+    .nav-links a { color: #ccc; text-decoration: none; font-size: 0.92rem; transition: color 0.2s; }
+    .nav-links a:hover { color: #e8572a; }
+    .nav-actions { display: flex; align-items: center; gap: 18px; }
+    .nav-actions .fa-search { color: #ccc; font-size: 1.1rem; cursor: pointer; }
+    .btn-join {
+      background-color: #e8572a; color: white; padding: 12px 26px;
+      border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.92rem;
+    }
+    .btn-join:hover { background-color: #cf4a20; }
+    .dropdown { position: relative; }
+    .dropdown-menu {
+      display: none; position: absolute; top: 100%; left: 0;
+      background: #1a1f2e; border-radius: 10px; padding: 10px 0;
+      min-width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 999; list-style: none; border-top: 3px solid #e8572a;
+    }
+    .dropdown-menu li a {
+      display: block; padding: 10px 20px; color: #ccc;
+      text-decoration: none; font-size: 0.9rem; transition: all 0.2s;
+    }
+    .dropdown-menu li a:hover { color: #e8572a; padding-left: 26px; background: rgba(255,255,255,0.04); }
+    .dropdown:hover .dropdown-menu { display: block; }
+
+    /* HERO BANNER */
+    .page-hero {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+        url('https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=1400&q=80') center/cover no-repeat;
+      padding: 80px 60px; text-align: center; color: white;
+    }
+    .page-hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; }
+    .breadcrumb {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.15); padding: 8px 20px;
+      border-radius: 50px; font-size: 0.88rem; color: white;
+    }
+    .breadcrumb a { color: white; text-decoration: none; }
+    .breadcrumb i { font-size: 0.7rem; color: #e8572a; }
+
+    /* CONTENU PRINCIPAL */
+    .details-section {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 70px 20px;
+    }
+
+    .details-main-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+      margin-bottom: 40px;
+    }
+
+    .details-section h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #1a1f2e;
+      margin-bottom: 16px;
+    }
+
+    .details-section p {
+      font-size: 0.95rem;
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    /* IMAGE VIDÉO */
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 36px 0;
+    }
+
+    .video-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.7);
+    }
+
+    .video-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      color: #1a1f2e;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+      text-decoration: none;
+    }
+
+    .video-btn:hover { transform: translate(-50%, -50%) scale(1.08); }
+    .video-btn i { font-size: 1.4rem; color: #e8572a; }
+
+    /* LISTE */
+    .details-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .details-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #1a1f2e;
+    }
+
+    .details-list li i {
+      color: #e8572a;
+      font-size: 0.9rem;
+    }
+
+    /* FOOTER */
+    .footer { background: #1a1f2e; color: #ccc; padding-top: 60px; }
+    .footer-contact-bar {
+      background: #e8572a; margin: 0 60px; border-radius: 16px; transform: translateY(-40px);
+      display: flex; align-items: center; justify-content: space-around;
+      padding: 30px 40px; gap: 30px; flex-wrap: wrap;
+    }
+    .contact-item { display: flex; align-items: center; gap: 16px; color: white; }
+    .contact-icon {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: rgba(255,255,255,0.2); display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+    }
+    .contact-item span { display: block; font-size: 0.8rem; opacity: 0.85; }
+    .contact-item strong { font-size: 1rem; font-weight: 700; }
+    .footer-body {
+      display: grid; grid-template-columns: 1.5fr 1fr 1.5fr 1.5fr;
+      gap: 40px; padding: 20px 60px 60px;
+    }
+    .footer-logo { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 16px; }
+    .footer-logo span { color: #e8572a; }
+    .footer-col p { font-size: 0.88rem; line-height: 1.7; color: #9aa0b0; margin-bottom: 20px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .footer-socials a {
+      width: 38px; height: 38px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: #ccc; text-decoration: none; font-size: 0.9rem; transition: all 0.2s;
+    }
+    .footer-socials a:hover { background: #e8572a; border-color: #e8572a; color: white; }
+    .footer-col h4 { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 12px; }
+    .footer-underline { width: 40px; height: 3px; background: #e8572a; border-radius: 2px; margin-bottom: 20px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a { color: #9aa0b0; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-links a:hover { color: #e8572a; }
+    .footer-articles { display: flex; flex-direction: column; gap: 16px; }
+    .footer-article { display: flex; gap: 12px; align-items: flex-start; }
+    .footer-article img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+    .footer-article span { font-size: 0.78rem; color: #9aa0b0; display: block; margin-bottom: 4px; }
+    .footer-article p { font-size: 0.85rem; color: #ccc; line-height: 1.4; margin: 0; }
+    .footer-contact-info { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .footer-contact-info p { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: #9aa0b0; margin: 0; }
+    .footer-contact-info i { color: #e8572a; }
+    .newsletter-input { display: flex; margin-bottom: 12px; }
+    .newsletter-input input {
+      flex: 1; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px 0 0 8px; background: rgba(255,255,255,0.05);
+      color: white; font-size: 0.88rem; outline: none;
+    }
+    .newsletter-input input::placeholder { color: #666; }
+    .newsletter-input button {
+      padding: 12px 18px; background: #e8572a; border: none;
+      border-radius: 0 8px 8px 0; color: white; cursor: pointer; transition: background 0.2s;
+    }
+    .newsletter-input button:hover { background: #cf4a20; }
+    .newsletter-check { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; color: #9aa0b0; }
+    .newsletter-check a { color: #ccc; text-decoration: underline; }
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 60px; background: #e8572a; flex-wrap: wrap; gap: 10px;
+    }
+    .footer-bottom p { font-size: 0.88rem; color: white; }
+    .footer-bottom-links { display: flex; gap: 24px; }
+    .footer-bottom-links a { color: white; text-decoration: none; font-size: 0.88rem; }
+    .footer-bottom-links a:hover { opacity: 0.7; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">
+      <span class="logo-icon">&#10084;</span> MANSOUR DEV
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Maison <i class="fas fa-chevron-down"></i></a></li>
+      <li><a href="#">À propos</a></li>
+      <li class="dropdown">
+        <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="services.html">Services</a></li>
+          <li><a href="service-details.html">Détails du service</a></li>
+          <li><a href="projet.html">Projet</a></li>
+          <li><a href="projet-details.html">Détails du projet</a></li>
+          <li><a href="equipe.html">Équipe</a></li>
+          <li><a href="membre-details.html">Détails des membres</a></li>
+          <li><a href="tarifs.html">Formules tarifaires</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="404.html">404</a></li>
+        </ul>
+      </li>
+      <li><a href="#">Donation <i class="fas fa-chevron-down"></i></a></li>
+      <li><a href="#">Événement <i class="fas fa-chevron-down"></i></a></li>
+      <li><a href="#">Blog <i class="fas fa-chevron-down"></i></a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <i class="fas fa-search"></i>
+      <a href="#" class="btn-join">&#187; Rejoignez-nous</a>
+    </div>
+  </nav>
+
+  <!-- HERO BANNER -->
+  <section class="page-hero">
+    <h1>Détails du service</h1>
+    <div class="breadcrumb">
+      <a href="index.html">Maison</a>
+      <i class="fas fa-chevron-right"></i>
+      <span>Détails du service</span>
+    </div>
+  </section>
+
+  <!-- CONTENU -->
+  <section class="details-section">
+
+    <img class="details-main-img"
+      src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80"
+      alt="Programmes de développement"/>
+
+    <h2>Programmes de développement</h2>
+    <p>BaseCreate a le plaisir d'annoncer que Leighton Asia lui a confié le repositionnement de sa marque. Nous accompagnons Leighton Asia dans l'évolution de sa stratégie de marque. Depuis près de 50 ans, Leighton Asia, l'une des entreprises de construction les plus importantes et les plus respectées de la région, œuvre sans relâche pour un avenir meilleur.</p>
+    <p>Depuis près de 50 ans, Leighton Asia, l'une des plus grandes et des plus respectées entreprises de construction de la région, œuvre sans relâche pour un avenir meilleur en alliant expertise internationale et connaissance du terrain. Durant cette période, Leighton a réalisé certains des bâtiments les plus prestigieux d'Asie et des projets d'infrastructures transformateurs.</p>
+
+    <h2>Services de remarquage</h2>
+    <p>Depuis près de 50 ans, Leighton Asia, l'une des plus grandes et des plus respectées entreprises de construction de la région, œuvre sans relâche pour un avenir meilleur en alliant expertise internationale et connaissance du terrain.</p>
+
+    <!-- IMAGE VIDÉO -->
+    <div class="video-wrapper">
+      <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=900&q=80" alt="vidéo"/>
+      <a href="#" class="video-btn">
+        <i class="fas fa-play"></i>
+        Lire la vidéo
+      </a>
+    </div>
+
+    <p>Le rafraîchissement de l'image de marque de Leighton Asia permettra à l'entreprise de se positionner avantageusement pour relever les défis de demain, alors qu'elle ambitionne de devenir un chef de file du secteur en matière d'innovation technologique et de pratiques de construction durables afin d'offrir une valeur pérenne à ses clients.</p>
+
+    <h2>Services Tous les détails</h2>
+    <p>Jeter des cailles obscures de jeep de blaneau lorsqu'elles sont changées en jeepers de chat affectueux, facilitant ainsi la bonté jusqu'ici comme ipsum dolor sit amet, consectetur adipiscing elit eusmod tempo incididunt et laboret dolore magna aliqua enim ad minim. Eveniet in voluptate esse molestie consequat, illum Eveniet in voluptate esse molestie dolore.</p>
+
+    <ul class="details-list">
+      <li><i class="fas fa-check"></i> Création et modification de contenu</li>
+      <li><i class="fas fa-check"></i> Flux de travail, rapports et organisation du contenu</li>
+      <li><i class="fas fa-check"></i> Administration et sécurité basées sur les utilisateurs et les rôles</li>
+      <li><i class="fas fa-check"></i> Flexibilité, évolutivité, performance et analyse</li>
+      <li><i class="fas fa-check"></i> Fonctionnalités de contenu multilingue</li>
+    </ul>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-contact-bar">
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+        <div><span>Adresse</span><strong>4648 Rocky Road Philadelphie PA, 1920</strong></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+        <div><span>Envoyer un e-mail</span><strong>info@exemple.com</strong></div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+        <div><span>Appelez les urgences</span><strong>+88 0123 654 99</strong></div>
+      </div>
+    </div>
+    <div class="footer-body">
+      <div class="footer-col">
+        <div class="footer-logo"><span>&#10084;</span> Charitics</div>
+        <p>Phasellus ultricies aliquam volutpat ullamcorper laoreet neque, un lacinia curabitur lacinia mollis</p>
+        <div class="footer-socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Liens rapides</h4>
+        <div class="footer-underline"></div>
+        <ul class="footer-links">
+          <li><a href="#">&#187; À propos de nous</a></li>
+          <li><a href="services.html">&#187; Nos services</a></li>
+          <li><a href="#">&#187; Nos blogs</a></li>
+          <li><a href="faq.html">&#187; FAQ</a></li>
+          <li><a href="#">&#187; Contactez-nous</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Articles récents</h4>
+        <div class="footer-underline"></div>
+        <div class="footer-articles">
+          <div class="footer-article">
+            <img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=100&q=80" alt="article"/>
+            <div><span><i class="far fa-calendar"></i> 12 mai 2025</span><p>Il existe de nombreuses variantes de passages de</p></div>
+          </div>
+          <div class="footer-article">
+            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=100&q=80" alt="article"/>
+            <div><span><i class="far fa-calendar"></i> 12 mai 2025</span><p>Il existe de nombreuses variantes de passages de</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Contactez-nous</h4>
+        <div class="footer-underline"></div>
+        <div class="footer-contact-info">
+          <p><i class="fas fa-envelope"></i> mansourngom657@gmail.com</p>
+          <p><i class="fas fa-phone"></i> 77 115 82 31</p>
+        </div>
+        <div class="newsletter-input">
+          <input type="email" placeholder="Votre adresse e-mail"/>
+          <button><i class="fas fa-arrow-right"></i></button>
+        </div>
+        <label class="newsletter-check">
+          <input type="checkbox"/>
+          <span>Je suis d'accord avec le <a href="#">politique de confidentialité</a></span>
+        </label>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Charitics. Tous droits réservés.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Conditions générales</a>
+        <a href="#">politique de confidentialité</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
