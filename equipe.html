@@ -3,628 +3,477 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Notre Équipe - Mansour Dev</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <title>Mansour Dev - Notre Équipe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
+    :root {
+      --orange: #e8572a; --orange-light: #ff7a4d; --dark: #0f1420;
+      --dark-2: #1a2035; --white: #ffffff; --gray: #f5f3ef;
+      --text: #444; --text-light: #888;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #fff; color: #1a1f2e; overflow-x: hidden; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--dark); overflow-x: hidden; }
+
+    /* CURSOR */
+    .cursor { width: 12px; height: 12px; background: var(--orange); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.15s ease; mix-blend-mode: multiply; }
+    .cursor-follower { width: 36px; height: 36px; border: 2px solid var(--orange); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transition: all 0.3s ease; opacity: 0.5; }
+
+    /* LOADER */
+    .loader { position: fixed; inset: 0; background: var(--dark); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.6s ease, visibility 0.6s; }
+    .loader.hidden { opacity: 0; visibility: hidden; }
+    .loader-logo { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; color: white; margin-bottom: 30px; animation: loaderPulse 1.5s ease-in-out infinite; }
+    .loader-logo span { color: var(--orange); }
+    @keyframes loaderPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .loader-bar { width: 200px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+    .loader-bar-fill { height: 100%; background: var(--orange); border-radius: 3px; width: 0%; animation: loadFill 1.5s ease forwards; }
+    @keyframes loadFill { to { width: 100%; } }
 
     /* NAVBAR */
-    .navbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 40px; background-color: #1a1f2e; position: sticky; top: 0; z-index: 100;
-    }
-    .logo {
-      font-size: 1.4rem; font-weight: 800; background: white; color: #1a1f2e;
-      padding: 10px 22px; border-radius: 50px; display: flex; align-items: center; gap: 8px;
-    }
-    .logo-icon { color: #e8572a; }
-    .nav-links { list-style: none; display: flex; gap: 26px; }
-    .nav-links a { color: #ccc; text-decoration: none; font-size: 0.92rem; transition: color 0.2s; }
-    .nav-links a:hover { color: #e8572a; }
-    .nav-actions { display: flex; align-items: center; gap: 18px; }
-    .nav-actions .fa-search { color: #ccc; font-size: 1.1rem; cursor: pointer; }
-    .btn-join {
-      background-color: #e8572a; color: white; padding: 12px 26px;
-      border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.92rem;
-    }
-    .btn-join:hover { background-color: #cf4a20; }
+    .navbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 50px; background: rgba(15,20,32,0.95); backdrop-filter: blur(20px); position: fixed; top: 0; left: 0; right: 0; z-index: 1000; border-bottom: 1px solid rgba(232,87,42,0.15); transition: all 0.4s ease; }
+    .navbar.scrolled { padding: 12px 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; background: white; color: var(--dark); padding: 10px 22px; border-radius: 50px; display: flex; align-items: center; gap: 8px; text-decoration: none; transition: transform 0.3s; }
+    .logo:hover { transform: scale(1.05); }
+    .logo-icon { color: var(--orange); }
+    .nav-links { list-style: none; display: flex; gap: 30px; }
+    .nav-links > li > a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.3s; position: relative; }
+    .nav-links > li > a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2px; background: var(--orange); transform: scaleX(0); transition: transform 0.3s; border-radius: 2px; }
+    .nav-links > li > a:hover { color: white; }
+    .nav-links > li > a:hover::after { transform: scaleX(1); }
     .dropdown { position: relative; }
-    .dropdown-menu {
-      display: none; position: absolute; top: 100%; left: 0;
-      background: #1a1f2e; border-radius: 10px; padding: 10px 0;
-      min-width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      z-index: 999; list-style: none; border-top: 3px solid #e8572a;
-    }
-    .dropdown-menu li a {
-      display: block; padding: 10px 20px; color: #ccc;
-      text-decoration: none; font-size: 0.9rem; transition: all 0.2s;
-    }
-    .dropdown-menu li a:hover { color: #e8572a; padding-left: 26px; background: rgba(255,255,255,0.04); }
+    .dropdown-menu { display: none; position: absolute; top: calc(100% + 16px); left: 0; background: var(--dark-2); border-radius: 14px; padding: 10px 0; min-width: 220px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); z-index: 999; list-style: none; border-top: 3px solid var(--orange); }
+    .dropdown-menu li a { display: block; padding: 10px 20px; color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.88rem; transition: all 0.2s; }
+    .dropdown-menu li a:hover { color: var(--orange); padding-left: 26px; }
     .dropdown:hover .dropdown-menu { display: block; }
+    .nav-actions { display: flex; align-items: center; gap: 16px; }
+    .btn-join { background: var(--orange); color: white; padding: 12px 26px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 6px; transition: all 0.3s; position: relative; overflow: hidden; }
+    .btn-join::before { content: ''; position: absolute; inset: 0; background: var(--orange-light); transform: translateX(-100%); transition: transform 0.4s; }
+    .btn-join:hover::before { transform: translateX(0); }
+    .btn-join span { position: relative; z-index: 1; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; z-index: 1100; background: none; border: none; }
+    .hamburger span { display: block; width: 26px; height: 3px; background: white; border-radius: 3px; transition: all 0.4s; transform-origin: center; }
+    .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 900; opacity: 0; transition: opacity 0.3s; }
+    .mobile-overlay.active { opacity: 1; }
+    .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--orange); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; z-index: 999; opacity: 0; visibility: hidden; transition: all 0.3s; box-shadow: 0 8px 20px rgba(232,87,42,0.4); text-decoration: none; }
+    .back-to-top.visible { opacity: 1; visibility: visible; }
 
-    /* HERO BANNER */
+    /* PAGE HERO */
     .page-hero {
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-        url('https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=1400&q=80') center/cover no-repeat;
-      padding: 80px 60px; text-align: center; color: white;
+      min-height: 100vh; background: var(--dark);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 140px 40px 80px;
+      position: relative; overflow: hidden;
     }
-    .page-hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; }
-    .breadcrumb {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,0.15); padding: 8px 20px;
-      border-radius: 50px; font-size: 0.88rem; color: white;
+    .page-hero::before {
+      content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(circle, rgba(232,87,42,0.12) 0%, transparent 70%);
+      border-radius: 50%; animation: pulseBig 4s ease-in-out infinite;
     }
-    .breadcrumb a { color: white; text-decoration: none; }
-    .breadcrumb i { font-size: 0.7rem; color: #e8572a; }
+    @keyframes pulseBig { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.1); } }
+    .ring-1 { position: absolute; width: 600px; height: 600px; border: 1px solid rgba(232,87,42,0.1); border-radius: 50%; animation: spinRing 20s linear infinite; }
+    .ring-2 { position: absolute; width: 450px; height: 450px; border: 1px dashed rgba(232,87,42,0.08); border-radius: 50%; animation: spinRing 30s linear infinite reverse; }
+    @keyframes spinRing { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    /* ÉQUIPE SECTION */
-    .team-section {
-      padding: 70px 160px;
-      background: #fff;
-    }
+    /* BAKELI BIG LOGO */
+    .bakeli-logo-wrap { position: relative; z-index: 2; margin-bottom: 40px; animation: fadeUp 0.8s ease both; }
+    .bakeli-logo-big { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; display: flex; align-items: center; gap: 16px; justify-content: center; }
+    .bakeli-logo-big .heart { color: var(--orange); animation: heartBeat 1.5s ease-in-out infinite; display: inline-block; }
+    @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+    .bakeli-logo-big .dev { color: var(--orange); }
+    .bakeli-sub { font-size: 0.85rem; color: rgba(255,255,255,0.4); letter-spacing: 4px; text-transform: uppercase; margin-top: 8px; }
 
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(232,87,42,0.15); border: 1px solid rgba(232,87,42,0.3); color: var(--orange); padding: 8px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 24px; position: relative; z-index: 2; animation: fadeUp 0.8s ease 0.15s both; }
+    .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 20px; position: relative; z-index: 2; animation: fadeUp 0.8s ease 0.3s both; }
+    .page-hero h1 span { color: var(--orange); }
+    .page-hero > p { font-size: 1rem; color: rgba(255,255,255,0.55); max-width: 520px; line-height: 1.8; position: relative; z-index: 2; animation: fadeUp 0.8s ease 0.45s both; margin-bottom: 50px; }
+    .scroll-indicator { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.4); font-size: 0.8rem; animation: fadeUp 0.8s ease 0.6s both; }
+    .scroll-indicator .arrow { animation: bounceDown 1.5s ease-in-out infinite; font-size: 1.2rem; color: var(--orange); }
+    @keyframes bounceDown { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-    .team-card {
-      background: white;
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
+    /* TEAM SECTION */
+    .team-section { padding: 100px 60px; background: var(--gray); }
+    .team-section-header { text-align: center; margin-bottom: 70px; }
+    .section-tag { display: inline-flex; align-items: center; gap: 6px; color: var(--orange); font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+    .team-section-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 16px; }
+    .team-section-header h2 span { color: var(--orange); }
+    .team-section-header p { color: var(--text); max-width: 500px; margin: 0 auto; line-height: 1.8; }
+    .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; max-width: 1100px; margin: 0 auto; }
 
-    .team-card:hover { transform: translateY(-4px); }
+    /* MEMBER CARD */
+    .member-card { background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.08); transition: all 0.4s; border: 1px solid rgba(232,87,42,0.08); position: relative; }
+    .member-card:hover { transform: translateY(-12px); box-shadow: 0 30px 70px rgba(232,87,42,0.15); border-color: rgba(232,87,42,0.3); }
+    .member-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--orange), var(--orange-light)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+    .member-card:hover::before { transform: scaleX(1); }
+    .member-avatar { height: 180px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--dark), var(--dark-2)); position: relative; overflow: hidden; }
+    .member-avatar::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, rgba(232,87,42,0.15) 0%, transparent 70%); }
+    .avatar-circle { width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2.5rem; color: white; border: 3px solid rgba(232,87,42,0.5); position: relative; z-index: 1; transition: transform 0.4s, box-shadow 0.4s; }
+    .member-card:hover .avatar-circle { transform: scale(1.1); box-shadow: 0 0 40px rgba(232,87,42,0.4); }
+    .av-lucie { background: linear-gradient(135deg, #e8572a, #ff9f6b); }
+    .av-khadija { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+    .av-ahmadou { background: linear-gradient(135deg, #059669, #34d399); }
+    .member-body { padding: 28px 24px; }
+    .member-role { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); font-weight: 700; margin-bottom: 6px; }
+    .member-name { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; }
+    .member-desc { font-size: 0.88rem; color: var(--text); line-height: 1.7; margin-bottom: 24px; }
+    .member-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--orange); color: white; padding: 14px 24px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 0.88rem; transition: all 0.3s; box-shadow: 0 8px 24px rgba(232,87,42,0.3); position: relative; overflow: hidden; }
+    .member-btn::before { content: ''; position: absolute; inset: 0; background: var(--orange-light); transform: translateX(-100%); transition: transform 0.4s; }
+    .member-btn:hover::before { transform: translateX(0); }
+    .member-btn span, .member-btn i { position: relative; z-index: 1; }
+    .member-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(232,87,42,0.4); }
 
-    /* Image + overlay */
-    .team-img {
-      position: relative;
-      overflow: hidden;
-    }
+    /* STATS */
+    .stats-mini { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--orange); }
+    .stat-mini-item { padding: 50px 30px; text-align: center; border-right: 1px solid rgba(255,255,255,0.2); transition: background 0.3s; }
+    .stat-mini-item:last-child { border-right: none; }
+    .stat-mini-item:hover { background: rgba(255,255,255,0.1); }
+    .stat-mini-item i { font-size: 2rem; color: rgba(255,255,255,0.5); display: block; margin-bottom: 10px; transition: transform 0.3s, color 0.3s; }
+    .stat-mini-item:hover i { transform: scale(1.2); color: white; }
+    .stat-mini-item h3 { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 900; color: white; margin-bottom: 6px; }
+    .stat-mini-item p { font-size: 0.88rem; color: rgba(255,255,255,0.75); }
 
-    .team-img img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      object-position: top;
-      display: block;
-      transition: filter 0.3s ease, transform 0.4s ease;
-    }
-
-    .team-card:hover .team-img img {
-      filter: brightness(0.4);
-      transform: scale(1.06);
-    }
-
-    /* Overlay socials */
-    .team-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .team-card:hover .team-overlay { opacity: 1; }
-
-    .social-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transform: translateX(-20px);
-      transition: transform 0.3s ease;
-    }
-
-    .team-card:hover .social-row { transform: translateX(0); }
-    .team-card:hover .social-row:nth-child(2) { transition-delay: 0.05s; }
-    .team-card:hover .social-row:nth-child(3) { transition-delay: 0.1s; }
-    .team-card:hover .social-row:nth-child(4) { transition-delay: 0.15s; }
-
-    .social-row a {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: #e8572a;
-      color: white;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.85rem;
-      text-decoration: none;
-      transition: background 0.2s;
-      flex-shrink: 0;
-    }
-
-    .social-row a:hover { background: white; color: #e8572a; }
-
-    .social-label {
-      color: white;
-      font-size: 0.82rem;
-      font-weight: 600;
-    }
-
-    /* Info membre */
-    .team-info {
-      padding: 14px 16px;
-      text-align: center;
-    }
-
-    .team-info h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #1a1f2e;
-      margin-bottom: 4px;
-      transition: color 0.3s;
-    }
-
-    .team-card:hover .team-info h3 { color: #e8572a; }
-
-    .team-info p {
-      font-size: 0.82rem;
-      color: #999;
-    }
-
-    /* BOUTON REJOINDRE */
-    .team-cta {
-      text-align: center;
-      margin-top: 50px;
-    }
-
-    .btn-donate {
-      background-color: #e8572a;
-      color: white;
-      padding: 16px 34px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 1rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: background 0.2s;
-    }
-    .btn-donate:hover { background-color: #cf4a20; }
+    /* BROWSE */
+    .browse-section { background: var(--dark); padding: 100px 60px; text-align: center; position: relative; overflow: hidden; }
+    .browse-section::before { content: ''; position: absolute; bottom: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,87,42,0.1) 0%, transparent 70%); border-radius: 50%; }
+    .browse-section .section-tag { color: var(--orange-light); }
+    .browse-section h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: white; margin-bottom: 20px; }
+    .browse-section h2 span { color: var(--orange); }
+    .browse-section p { color: rgba(255,255,255,0.5); max-width: 500px; margin: 0 auto 40px; line-height: 1.8; }
+    .browse-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--orange); color: white; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s; box-shadow: 0 14px 40px rgba(232,87,42,0.4); position: relative; overflow: hidden; }
+    .browse-btn::before { content: ''; position: absolute; inset: 0; background: var(--orange-light); transform: translateX(-100%); transition: transform 0.4s; }
+    .browse-btn:hover::before { transform: translateX(0); }
+    .browse-btn span, .browse-btn i { position: relative; z-index: 1; }
+    .browse-btn:hover { transform: translateY(-4px); box-shadow: 0 20px 50px rgba(232,87,42,0.5); }
 
     /* FOOTER */
-    .footer { background: #1a1f2e; color: #ccc; padding-top: 60px; }
-    .footer-contact-bar {
-      background: #e8572a; margin: 0 60px; border-radius: 16px; transform: translateY(-40px);
-      display: flex; align-items: center; justify-content: space-around;
-      padding: 30px 40px; gap: 30px; flex-wrap: wrap;
-    }
+    .footer { background: var(--dark); color: rgba(255,255,255,0.6); padding-top: 60px; }
+    .footer-contact-bar { background: var(--orange); margin: 0 60px; border-radius: 20px; transform: translateY(-40px); display: flex; align-items: center; justify-content: space-around; padding: 30px 40px; gap: 30px; flex-wrap: wrap; box-shadow: 0 20px 50px rgba(232,87,42,0.4); }
     .contact-item { display: flex; align-items: center; gap: 16px; color: white; }
-    .contact-icon {
-      width: 50px; height: 50px; border-radius: 50%;
-      background: rgba(255,255,255,0.2); display: flex; align-items: center;
-      justify-content: center; font-size: 1.1rem; flex-shrink: 0;
-    }
-    .contact-item span { display: block; font-size: 0.8rem; opacity: 0.85; }
-    .contact-item strong { font-size: 1rem; font-weight: 700; }
-    .footer-body {
-      display: grid; grid-template-columns: 1.5fr 1fr 1.5fr 1.5fr;
-      gap: 40px; padding: 20px 60px 60px;
-    }
-    .footer-logo { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 16px; }
-    .footer-logo span { color: #e8572a; }
-    .footer-col p { font-size: 0.88rem; line-height: 1.7; color: #9aa0b0; margin-bottom: 20px; }
+    .contact-icon { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .contact-item > div span { display: block; font-size: 0.78rem; opacity: 0.8; }
+    .contact-item > div strong { font-size: 0.95rem; font-weight: 700; }
+    .footer-body { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; padding: 20px 60px 60px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 800; color: white; margin-bottom: 16px; }
+    .footer-logo span { color: var(--orange); }
+    .footer-col > p { font-size: 0.87rem; line-height: 1.75; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
     .footer-socials { display: flex; gap: 10px; }
-    .footer-socials a {
-      width: 38px; height: 38px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15);
-      display: flex; align-items: center; justify-content: center;
-      color: #ccc; text-decoration: none; font-size: 0.9rem; transition: all 0.2s;
-    }
-    .footer-socials a:hover { background: #e8572a; border-color: #e8572a; color: white; }
-    .footer-col h4 { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 12px; }
-    .footer-underline { width: 40px; height: 3px; background: #e8572a; border-radius: 2px; margin-bottom: 20px; }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-    .footer-links a { color: #9aa0b0; text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
-    .footer-links a:hover { color: #e8572a; }
-    .footer-articles { display: flex; flex-direction: column; gap: 16px; }
-    .footer-article { display: flex; gap: 12px; align-items: flex-start; }
-    .footer-article img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
-    .footer-article span { font-size: 0.78rem; color: #9aa0b0; display: block; margin-bottom: 4px; }
-    .footer-article p { font-size: 0.85rem; color: #ccc; line-height: 1.4; margin: 0; }
-    .footer-contact-info { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-    .footer-contact-info p { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: #9aa0b0; margin: 0; }
-    .footer-contact-info i { color: #e8572a; }
-    .newsletter-input { display: flex; margin-bottom: 12px; }
-    .newsletter-input input {
-      flex: 1; padding: 12px 16px; border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px 0 0 8px; background: rgba(255,255,255,0.05);
-      color: white; font-size: 0.88rem; outline: none;
-    }
-    .newsletter-input input::placeholder { color: #666; }
-    .newsletter-input button {
-      padding: 12px 18px; background: #e8572a; border: none;
-      border-radius: 0 8px 8px 0; color: white; cursor: pointer; transition: background 0.2s;
-    }
-    .newsletter-input button:hover { background: #cf4a20; }
-    .newsletter-check { display: flex; align-items: flex-start; gap: 8px; font-size: 0.82rem; color: #9aa0b0; }
-    .newsletter-check a { color: #ccc; text-decoration: underline; }
-    .footer-bottom {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 60px; background: #e8572a; flex-wrap: wrap; gap: 10px;
-    }
-    .footer-bottom p { font-size: 0.88rem; color: white; }
+    .footer-socials a { width: 38px; height: 38px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.88rem; transition: all 0.3s; }
+    .footer-socials a:hover { background: var(--orange); border-color: var(--orange); color: white; transform: translateY(-3px); }
+    .footer-col h4 { font-size: 1rem; font-weight: 700; color: white; margin-bottom: 10px; }
+    .footer-underline { width: 36px; height: 3px; background: var(--orange); border-radius: 2px; margin-bottom: 18px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.88rem; transition: all 0.3s; display: flex; align-items: center; gap: 6px; }
+    .footer-links a::before { content: '›'; color: var(--orange); font-size: 1.1rem; }
+    .footer-links a:hover { color: var(--orange-light); padding-left: 4px; }
+    .footer-contact-info { display: flex; flex-direction: column; gap: 10px; }
+    .footer-contact-info p { display: flex; align-items: center; gap: 10px; font-size: 0.87rem; color: rgba(255,255,255,0.4); margin: 0; }
+    .footer-contact-info i { color: var(--orange); }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; padding: 20px 60px; background: var(--orange); flex-wrap: wrap; gap: 10px; }
+    .footer-bottom p { font-size: 0.86rem; color: rgba(255,255,255,0.85); }
     .footer-bottom-links { display: flex; gap: 24px; }
-    .footer-bottom-links a { color: white; text-decoration: none; font-size: 0.88rem; }
-    .footer-bottom-links a:hover { opacity: 0.7; }
+    .footer-bottom-links a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 0.86rem; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-body { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .mobile-overlay { display: block; pointer-events: none; }
+      .mobile-overlay.active { pointer-events: all; }
+      .navbar { padding: 14px 20px; }
+      .nav-links { position: fixed; top: 0; right: -100%; width: 80%; max-width: 320px; height: 100vh; background: var(--dark-2); flex-direction: column; gap: 0; padding: 90px 0 40px; z-index: 1000; transition: right 0.4s; border-left: 3px solid var(--orange); }
+      .nav-links.open { right: 0; }
+      .nav-links > li { border-bottom: 1px solid rgba(255,255,255,0.06); width: 100%; }
+      .nav-links > li > a { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; font-size: 1rem; }
+      .nav-links > li > a::after { display: none; }
+      .dropdown-menu { position: static !important; display: none; box-shadow: none; border-radius: 0; border-top: none; border-left: 3px solid rgba(232,87,42,0.3); margin-left: 20px; background: rgba(255,255,255,0.03); animation: none; }
+      .dropdown.active .dropdown-menu { display: block; }
+      .nav-actions .btn-join { display: none; }
+      .team-section { padding: 60px 20px; }
+      .team-grid { grid-template-columns: 1fr; max-width: 380px; margin: 0 auto; }
+      .browse-section { padding: 60px 20px; }
+      .stats-mini { grid-template-columns: 1fr; }
+      .stat-mini-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); }
+      .footer-contact-bar { margin: 0 20px; padding: 24px 20px; flex-direction: column; }
+      .footer-body { grid-template-columns: 1fr; padding: 20px 20px 40px; }
+      .footer-bottom { padding: 16px 20px; flex-direction: column; text-align: center; }
+      .cursor, .cursor-follower { display: none; }
+    }
   </style>
 </head>
 <body>
 
+  <div class="loader" id="loader">
+    <div class="loader-logo">&#10084; <span>MANSOUR</span> DEV</div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+  <a href="#" class="back-to-top" id="backToTop"><i class="fas fa-arrow-up"></i></a>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
   <!-- NAVBAR -->
-  <nav class="navbar">
-    <div class="logo">
-      <span class="logo-icon">&#10084;</span> MANSOUR DEV
-    </div>
-    <ul class="nav-links">
-      <li><a href="index.html">Maison <i class="fas fa-chevron-down"></i></a></li>
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="logo"><span class="logo-icon">&#10084;</span> MANSOUR DEV</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navLinks">
+      <li class="dropdown">
+        <a href="#">Maison <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="index.html">Accueil 1</a></li>
+          <li><a href="index-2.html">Accueil 2</a></li>
+        </ul>
+      </li>
       <li><a href="#">À propos</a></li>
       <li class="dropdown">
         <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
         <ul class="dropdown-menu">
-          <li><a href="services.html">Services</a></li>
-          <li><a href="service-details.html">Détails du service</a></li>
+          <li><a href="services-mansour.html">Services</a></li>
           <li><a href="projet.html">Projet</a></li>
-          <li><a href="projet-details.html">Détails du projet</a></li>
           <li><a href="equipe.html">Équipe</a></li>
-          <li><a href="membre-details.html">Détails des membres</a></li>
-          <li><a href="tarifs.html">Formules tarifaires</a></li>
+          <li><a href="tarifs-mansour.html">Tarifs</a></li>
           <li><a href="faq.html">FAQ</a></li>
-          <li><a href="404.html">404</a></li>
         </ul>
       </li>
-      <li><a href="#">Donation <i class="fas fa-chevron-down"></i></a></li>
-      <li><a href="#">Événement <i class="fas fa-chevron-down"></i></a></li>
-      <li><a href="#">Blog <i class="fas fa-chevron-down"></i></a></li>
+      
+      <li class="dropdown">
+        <a href="#">Donation <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="donation-liste.html">Liste des dons</a></li>
+          <li><a href="donation-details.html">Détails du don</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#">Événement <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="evenement.html">Événement</a></li>
+          <li><a href="evenement-details.html">Détails de l'événement</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
+        <ul class="dropdown-menu">
+          <li><a href="blogs.html">Blogs</a></li>
+          <li><a href="blogs-2.html">Blogs 2</a></li>
+          <li><a href="blog-details.html">Détails du blog</a></li>
+        </ul>
+      </li>
       <li><a href="#">Contact</a></li>
     </ul>
+    </ul>
     <div class="nav-actions">
-      <i class="fas fa-search"></i>
-      <a href="#" class="btn-join">&#187; Rejoignez-nous</a>
+      <i class="fas fa-search" style="color:rgba(255,255,255,0.7);cursor:pointer;"></i>
+      <a href="#" class="btn-join"><span>&#187; Rejoignez-nous</span></a>
     </div>
   </nav>
 
-  <!-- HERO BANNER -->
+  <!-- HERO -->
   <section class="page-hero">
-    <h1>Notre équipe</h1>
-    <div class="breadcrumb">
-      <a href="index.html">Maison</a>
-      <i class="fas fa-chevron-right"></i>
-      <span>Notre équipe</span>
+    <div class="ring-1"></div>
+    <div class="ring-2"></div>
+    <div class="bakeli-logo-wrap">
+      <div class="bakeli-logo-big">
+        <span class="heart">&#10084;</span>
+        <span>BAKELI</span>
+        <span class="dev">DEV</span>
+      </div>
+      <p class="bakeli-sub">School of Technology — Projet Collaboratif</p>
+    </div>
+    <div class="hero-tag"><i class="fas fa-users"></i> Notre équipe de développeurs</div>
+    <h1>Les talents derrière le <span>projet Bakeli</span></h1>
+    <p>Découvrez les développeurs qui ont contribué à ce projet. Cliquez sur leur profil pour visiter leur site personnel.</p>
+    <div class="scroll-indicator">
+      <span>Découvrir l'équipe</span>
+      <i class="fas fa-chevron-down arrow"></i>
     </div>
   </section>
 
-  <!-- ÉQUIPE -->
+  <!-- TEAM -->
   <section class="team-section">
+    <div class="team-section-header reveal">
+      <p class="section-tag"><i class="fas fa-heart"></i> Notre équipe</p>
+      <h2>Des développeurs <span>passionnés</span></h2>
+      <p>Chaque membre a contribué avec ses compétences uniques pour enrichir ce projet collaboratif Bakeli.</p>
+    </div>
+
+    <div class="member-card reveal">
+        <div class="member-avatar"><div class="avatar-circle" style="background: linear-gradient(135deg, #e8572a, #c94420);">M</div></div>
+        <div class="member-body">
+          <div class="member-role">Développeur Frontend</div>
+          <div class="member-name">Mansour</div>
+          <p class="member-desc">Chef de projet et développeur principal. Il a conçu et structuré l'ensemble du projet collaboratif Bakeli avec passion.</p>
+          <a href="index.html" target="_blank" class="member-btn">
+            <span>&#187; Voir son site</span>
+            <i class="fas fa-arrow-up-right-from-square"></i>
+          </a>
+        </div>
+      </div>
     <div class="team-grid">
 
-      <!-- Membre 1 -->
-      <div class="team-card">
-        <div class="team-img">
-          <img src="https://i.pinimg.com/1200x/de/3e/4c/de3e4cd528a44df166891f122e2da5e8.jpg" alt="membre"/>
-          <div class="team-overlay">
-            <div class="social-row">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <span class="social-label">Facebook</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-              <span class="social-label">WhatsApp</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <span class="social-label">Instagram</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-yahoo"></i></a>
-              <span class="social-label">Yahoo</span>
-            </div>
-          </div>
-        </div>
-        <div class="team-info">
-          <h3>Mansour Ngom</h3>
-          <p>Avocat</p>
+      <div class="member-card reveal">
+        <div class="member-avatar"><div class="avatar-circle av-lucie">L</div></div>
+        <div class="member-body">
+          <div class="member-role">Développeuse Frontend</div>
+          <div class="member-name">Lucie</div>
+          <p class="member-desc">Passionnée par le design et l'expérience utilisateur. Elle a travaillé sur l'interface et la mise en page du projet Bakeli.</p>
+          <a href="index-lucie.html" target="_blank" class="member-btn">
+            <span>&#187; Voir son site</span>
+            <i class="fas fa-arrow-up-right-from-square"></i>
+          </a>
         </div>
       </div>
 
-      <!-- Membre 2 -->
-      <div class="team-card">
-        <div class="team-img">
-          <img src="https://i.pinimg.com/1200x/47/bc/53/47bc53e3f6c3c6c90db8bbfd76eb803b.jpg" alt="membre"/>
-          <div class="team-overlay">
-            <div class="social-row">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <span class="social-label">Facebook</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-              <span class="social-label">WhatsApp</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <span class="social-label">Instagram</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-yahoo"></i></a>
-              <span class="social-label">Yahoo</span>
-            </div>
-          </div>
-        </div>
-        <div class="team-info">
-          <h3>Amadou Diop</h3>
-          <p>Avocat</p>
+      <div class="member-card reveal">
+        <div class="member-avatar"><div class="avatar-circle av-khadija">K</div></div>
+        <div class="member-body">
+          <div class="member-role">Développeuse Web</div>
+          <div class="member-name">Khadija</div>
+          <p class="member-desc">Experte en structure et logique. Elle a apporté son expertise dans l'organisation et la cohérence du projet Bakeli.</p>
+          <a href="index-khadija.html" target="_blank" class="member-btn">
+            <span>&#187; Voir son site</span>
+            <i class="fas fa-arrow-up-right-from-square"></i>
+          </a>
         </div>
       </div>
 
-      <!-- Membre 3 -->
-      <div class="team-card">
-        <div class="team-img">
-          <img src="https://i.pinimg.com/736x/02/73/7d/02737dae3b687c83238e7e6ee676c70e.jpg" alt="membre"/>
-          <div class="team-overlay">
-            <div class="social-row">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <span class="social-label">Facebook</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-              <span class="social-label">WhatsApp</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <span class="social-label">Instagram</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-yahoo"></i></a>
-              <span class="social-label">Yahoo</span>
-            </div>
-          </div>
-        </div>
-        <div class="team-info">
-          <h3>Khadija Cisse</h3>
-          <p>Avocat</p>
-        </div>
-      </div>
-
-      <!-- Membre 4 -->
-      <div class="team-card">
-        <div class="team-img">
-          <img src="https://i.pinimg.com/736x/f8/6c/9c/f86c9c22d4fb31dbda4dda0d27b8de7a.jpg" alt="membre"/>
-          <div class="team-overlay">
-            <div class="social-row">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <span class="social-label">Facebook</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-              <span class="social-label">WhatsApp</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <span class="social-label">Instagram</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-yahoo"></i></a>
-              <span class="social-label">Yahoo</span>
-            </div>
-          </div>
-        </div>
-        <div class="team-info">
-          <h3>Ahmed Ndiaye</h3>
-          <p>Avocat</p>
-        </div>
-      </div>
-
-      <!-- Membre 5 -->
-      <div class="team-card">
-        <div class="team-img">
-          <img src="https://i.pravatar.cc/300?img=11" alt="membre"/>
-          <div class="team-overlay">
-            <div class="social-row">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <span class="social-label">Facebook</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-              <span class="social-label">WhatsApp</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <span class="social-label">Instagram</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-yahoo"></i></a>
-              <span class="social-label">Yahoo</span>
-            </div>
-          </div>
-        </div>
-        <div class="team-info">
-          <h3>Fatou Sarr</h3>
-          <p>Bénévole</p>
-        </div>
-      </div>
-
-      <!-- Membre 6 -->
-      <div class="team-card">
-        <div class="team-img">
-          <img src="https://i.pravatar.cc/300?img=25" alt="membre"/>
-          <div class="team-overlay">
-            <div class="social-row">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <span class="social-label">Facebook</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-              <span class="social-label">WhatsApp</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <span class="social-label">Instagram</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-yahoo"></i></a>
-              <span class="social-label">Yahoo</span>
-            </div>
-          </div>
-        </div>
-        <div class="team-info">
-          <h3>Omar Diallo</h3>
-          <p>Coordinateur</p>
-        </div>
-      </div>
-
-      <!-- Membre 7 -->
-      <div class="team-card">
-        <div class="team-img">
-          <img src="https://i.pravatar.cc/300?img=32" alt="membre"/>
-          <div class="team-overlay">
-            <div class="social-row">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <span class="social-label">Facebook</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-              <span class="social-label">WhatsApp</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <span class="social-label">Instagram</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-yahoo"></i></a>
-              <span class="social-label">Yahoo</span>
-            </div>
-          </div>
-        </div>
-        <div class="team-info">
-          <h3>Aïssatou Ba</h3>
-          <p>Donatrice</p>
-        </div>
-      </div>
-
-      <!-- Membre 8 -->
-      <div class="team-card">
-        <div class="team-img">
-          <img src="https://i.pravatar.cc/300?img=60" alt="membre"/>
-          <div class="team-overlay">
-            <div class="social-row">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <span class="social-label">Facebook</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-whatsapp"></i></a>
-              <span class="social-label">WhatsApp</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <span class="social-label">Instagram</span>
-            </div>
-            <div class="social-row">
-              <a href="#"><i class="fab fa-yahoo"></i></a>
-              <span class="social-label">Yahoo</span>
-            </div>
-          </div>
-        </div>
-        <div class="team-info">
-          <h3>Ibrahima Fall</h3>
-          <p>Bénévole</p>
+      <div class="member-card reveal">
+        <div class="member-avatar"><div class="avatar-circle av-ahmadou">A</div></div>
+        <div class="member-body">
+          <div class="member-role">Développeur Full Stack</div>
+          <div class="member-name">Ahmadou</div>
+          <p class="member-desc">Polyvalent et créatif, il a enrichi le projet avec ses idées innovantes et ses compétences en développement web.</p>
+          <a href="index-ahmadou.html" target="_blank" class="member-btn">
+            <span>&#187; Voir son site</span>
+            <i class="fas fa-arrow-up-right-from-square"></i>
+          </a>
         </div>
       </div>
 
     </div>
+  </section>
 
-    <!-- BOUTON REJOINDRE -->
-    <div class="team-cta">
-      <a href="#" class="btn-donate">&#187; Rejoignez-nous</a>
-    </div>
+  <!-- STATS -->
+  <div class="stats-mini">
+    <div class="stat-mini-item"><i class="fas fa-users"></i><h3>3+</h3><p>Collaborateurs</p></div>
+    <div class="stat-mini-item"><i class="fas fa-code"></i><h3>1</h3><p>Projet collaboratif</p></div>
+    <div class="stat-mini-item"><i class="fab fa-github"></i><h3>4+</h3><p>Branches GitHub</p></div>
+  </div>
 
+  <!-- BROWSE -->
+  <section class="browse-section">
+    <p class="section-tag"><i class="fas fa-heart"></i> Projet Bakeli</p>
+    <h2>Parcourir le <span>projet Bakeli</span></h2>
+    <p>Visitez le dépôt GitHub du projet pour voir tout le code source et les contributions de chaque membre de l'équipe.</p>
+    <a href="https://github.com/Mansourngom/Bakeli" target="_blank" class="browse-btn">
+      <span>&#187; Parcourir le projet Bakeli</span>
+      <i class="fab fa-github"></i>
+    </a>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="footer-contact-bar">
-      <div class="contact-item">
-        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-        <div><span>Adresse</span><strong>4648 Rocky Road Philadelphie PA, 1920</strong></div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-        <div><span>Envoyer un e-mail</span><strong>info@exemple.com</strong></div>
-      </div>
-      <div class="contact-item">
-        <div class="contact-icon"><i class="fas fa-phone"></i></div>
-        <div><span>Appelez les urgences</span><strong>+88 0123 654 99</strong></div>
-      </div>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div><span>Adresse</span><strong>Dakar, Sénégal</strong></div></div>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div><span>Email</span><strong>mansourngom657@gmail.com</strong></div></div>
+      <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div><span>Téléphone</span><strong>+221 77 115 82 31</strong></div></div>
     </div>
     <div class="footer-body">
       <div class="footer-col">
         <div class="footer-logo"><span>&#10084;</span> Charitics</div>
-        <p>Phasellus ultricies aliquam volutpat ullamcorper laoreet neque, un lacinia curabitur lacinia mollis</p>
+        <p>Projet collaboratif réalisé dans le cadre de la formation à Bakeli School of Technology.</p>
         <div class="footer-socials">
           <a href="#"><i class="fab fa-facebook-f"></i></a>
           <a href="#"><i class="fab fa-twitter"></i></a>
           <a href="#"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#"><i class="fab fa-youtube"></i></a>
+          <a href="https://github.com/Mansourngom/Bakeli" target="_blank"><i class="fab fa-github"></i></a>
         </div>
       </div>
       <div class="footer-col">
         <h4>Liens rapides</h4>
         <div class="footer-underline"></div>
         <ul class="footer-links">
-          <li><a href="#">&#187; À propos de nous</a></li>
-          <li><a href="services.html">&#187; Nos services</a></li>
-          <li><a href="#">&#187; Nos blogs</a></li>
-          <li><a href="faq.html">&#187; FAQ</a></li>
-          <li><a href="#">&#187; Contactez-nous</a></li>
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="equipe.html">Équipe</a></li>
+          <li><a href="faq.html">FAQ</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Articles récents</h4>
+        <h4>Équipe Bakeli</h4>
         <div class="footer-underline"></div>
-        <div class="footer-articles">
-          <div class="footer-article">
-            <img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=100&q=80" alt="article"/>
-            <div><span><i class="far fa-calendar"></i> 12 mai 2025</span><p>Il existe de nombreuses variantes de passages de</p></div>
-          </div>
-          <div class="footer-article">
-            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=100&q=80" alt="article"/>
-            <div><span><i class="far fa-calendar"></i> 12 mai 2025</span><p>Il existe de nombreuses variantes de passages de</p></div>
-          </div>
-        </div>
+        <ul class="footer-links">
+          <li><a href="https://luciemalack.github.io/Site%20Mon" target="_blank">Site de Lucie</a></li>
+          <li><a href="https://khadijacisse17.github.io/Site%20Mon" target="_blank">Site de Khadija</a></li>
+          <li><a href="https://lyahmadou203.github.io/mon-site12" target="_blank">Site de Ahmadou</a></li>
+          <li><a href="https://github.com/Mansourngom/Bakeli" target="_blank">Dépôt GitHub</a></li>
+        </ul>
       </div>
       <div class="footer-col">
-        <h4>Contactez-nous</h4>
+        <h4>Contact</h4>
         <div class="footer-underline"></div>
         <div class="footer-contact-info">
           <p><i class="fas fa-envelope"></i> mansourngom657@gmail.com</p>
           <p><i class="fas fa-phone"></i> 77 115 82 31</p>
         </div>
-        <div class="newsletter-input">
-          <input type="email" placeholder="Votre adresse e-mail"/>
-          <button><i class="fas fa-arrow-right"></i></button>
-        </div>
-        <label class="newsletter-check">
-          <input type="checkbox"/>
-          <span>Je suis d'accord avec le <a href="#">politique de confidentialité</a></span>
-        </label>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Charitics. Tous droits réservés.</p>
+      <p>© 2026 Charitics — Projet Bakeli. Tous droits réservés.</p>
       <div class="footer-bottom-links">
         <a href="#">Conditions générales</a>
-        <a href="#">politique de confidentialité</a>
+        <a href="#">Politique de confidentialité</a>
       </div>
     </div>
   </footer>
 
+  <script>
+    window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1600));
+
+    const cursor = document.getElementById('cursor');
+    const follower = document.getElementById('cursorFollower');
+    let mouseX = 0, mouseY = 0, fx = 0, fy = 0;
+    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; cursor.style.left = mouseX-6+'px'; cursor.style.top = mouseY-6+'px'; });
+    setInterval(() => { fx += (mouseX-fx)*0.12; fy += (mouseY-fy)*0.12; follower.style.left = fx-18+'px'; follower.style.top = fy-18+'px'; }, 16);
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.transform='scale(2)'; follower.style.opacity='0.2'; });
+      el.addEventListener('mouseleave', () => { cursor.style.transform='scale(1)'; follower.style.opacity='0.5'; });
+    });
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', scrollY > 60);
+      document.getElementById('backToTop').classList.toggle('visible', scrollY > 60);
+    });
+
+    const observer = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    const overlay = document.getElementById('mobileOverlay');
+    const open = () => { hamburger.classList.add('open'); navLinks.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow='hidden'; };
+    const close = () => { hamburger.classList.remove('open'); navLinks.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow=''; };
+    hamburger.addEventListener('click', () => navLinks.classList.contains('open') ? close() : open());
+    overlay.addEventListener('click', close);
+    window.addEventListener('resize', () => { if(innerWidth > 768) close(); });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', e => {
+        const parent = link.closest('.dropdown');
+        if(parent && link.parentElement === parent && innerWidth <= 768) { e.preventDefault(); parent.classList.toggle('active'); }
+        else close();
+      });
+    });
+  </script>
 </body>
 </html>
