@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charitics - Charity Website</title>
+    <link rel="stylesheet" href="style-ahmadou.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #ff5722;
+            --secondary-color: #263238;
+            --text-color: #333;
+            --light-bg: #f5f5f5;
+        }
+
+        /* Header Styles */
+        header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .logo i {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-join {
+            background: var(--primary-color);
+            color: white !important;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-join:hover {
+            background: #e64a19;
+            transform: translateY(-2px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--secondary-color);
+            transition: all 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #37474f 100%);
+            color: white;
+            padding: 4rem 5%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            right: -100px;
+            top: -100px;
+            width: 600px;
+            height: 600px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.1;
+        }
+
+        .hero-content h3 {
+            color: var(--primary-color);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #e64a19;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,87,34,0.3);
+        }
+
+        .active-donors {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .donor-avatars {
+            display: flex;
+        }
+
+        .donor-avatars img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin-left: -15px;
+            object-fit: cover;
+        }
+
+        .donor-avatars img:first-child {
+            margin-left: 0;
+        }
+
+        .hero-image {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 5%;
+            background: white;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .heart-shape {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            background: var(--primary-color);
+            position: relative;
+            margin: 0 auto;
+            transform: rotate(-45deg);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .heart-shape::before,
+        .heart-shape::after {
+            content: '';
+            width: 400px;
+            height: 400px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart-shape::before {
+            top: -200px;
+            left: 0;
+        }
+
+        .heart-shape::after {
+            left: 200px;
+            top: 0;
+        }
+
+        .heart-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            color: white;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .heart-content h2 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: rotate(-45deg) scale(1); }
+            50% { transform: rotate(-45deg) scale(1.05); }
+        }
+
+        .about-text h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        .about-text p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .team-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .team-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .team-info i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            background: rgba(255,87,34,0.1);
+            padding: 1rem;
+            border-radius: 50%;
+        }
+
+        .team-photos {
+            display: flex;
+            gap: -10px;
+        }
+
+        .team-photos img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin-left: -15px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .team-photos img:first-child {
+            margin-left: 0;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 10px;
+        }
+
+        .contact-info i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        /* Events Section */
+        .events {
+            padding: 5rem 5%;
+            background: var(--light-bg);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .event-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .event-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-date {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .event-date .day {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .event-date .month {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .event-content {
+            padding: 2rem;
+        }
+
+        .event-content h3 {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .event-content p {
+            color: #666;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .event-location {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .event-location i {
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-section p {
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .quick-links ul,
+        .recent-posts ul {
+            list-style: none;
+        }
+
+        .quick-links li,
+        .recent-posts li {
+            margin-bottom: 1rem;
+        }
+
+        .quick-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .post-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .post-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .post-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-info span {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .contact-form button:hover {
+            background: #e64a19;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-bottom a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            margin-left: 2rem;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Media Queries */
+        @media (max-width: 968px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: white;
+                flex-direction: column;
+                padding: 2rem;
+                transition: right 0.3s;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .hamburger.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -6px);
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                max-width: 100%;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-image {
+                order: -1;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .heart-shape {
+                max-width: 300px;
+                height: 250px;
+            }
+
+            .heart-shape::before,
+            .heart-shape::after {
+                width: 250px;
+                height: 250px;
+            }
+
+            .heart-shape::before {
+                top: -125px;
+            }
+
+            .heart-shape::after {
+                left: 125px;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .about-text h2 {
+                font-size: 1.8rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-heart"></i>
+                <span>Charitics</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home <i class="fas fa-chevron-down"></i></a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#pages">Pages <i class="fas fa-chevron-down"></i></a></li>
+                <li><a href="#donation">Donation <i class="fas fa-chevron-down"></i></a></li>
+                <li><a href="#event">Event <i class="fas fa-chevron-down"></i></a></li>
+                <li><a href="#blog">Blog <i class="fas fa-chevron-down"></i></a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#join" class="btn-join"><i class="fas fa-arrow-right"></i> Join With us</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h3><i class="fas fa-heart"></i> AHMADOU LY</h3>
+            <h1>AHMADOU LY DEVEULOPPEUR WEB</h1>
+            <p>It is a long established fact that a reader will be distracted lorem the readable content of a page when looking at layout the point lorem established fact that it is a long established</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn-primary">
+                    <i class="fas fa-arrow-right"></i> Make Donation
+                </a>
+                <div class="active-donors">
+                    <div class="donor-avatars">
+                        <img src="https://i.pravatar.cc/150?img=1" alt="Donor">
+                        <img src="https://i.pravatar.cc/150?img=2" alt="Donor">
+                        <img src="https://i.pravatar.cc/150?img=3" alt="Donor">
+                        <img src="https://i.pravatar.cc/150?img=4" alt="Donor">
+                    </div>
+                    <span><strong>2.M</strong> Active donors</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&h=700&fit=crop" alt="Charity">
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-image">
+            <div class="heart-shape">
+                <div class="heart-content">
+                    <h2>15+</h2>
+                    <p>Years Of Experience</p>
+                </div>
+            </div>
+        </div>
+        <div class="about-text">
+            <h3><i class="fas fa-heart"></i> About US</h3>
+            <h2>Helping Each Other can Make World Better</h2>
+            <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit The aspernaturaut odit aut fugit, sed quia consequuntur. Nonprofits around the world apply and join us to access more funding.</p>
+            
+            <div class="team-section">
+                <div class="team-info">
+                    <i class="fas fa-hands-helping"></i>
+                    <div>
+                        <h4>Start Helping Team</h4>
+                        <p style="margin: 0; font-size: 0.9rem;">There are many variations of solve</p>
+                    </div>
+                </div>
+                <div class="team-photos">
+                    <img src="https://i.pravatar.cc/150?img=5" alt="Team">
+                    <img src="https://i.pravatar.cc/150?img=6" alt="Team">
+                    <img src="https://i.pravatar.cc/150?img=7" alt="Team">
+                    <img src="https://i.pravatar.cc/150?img=8" alt="Team">
+                    <img src="https://i.pravatar.cc/150?img=9" alt="Team">
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <a href="#" class="btn-primary">
+                    <i class="fas fa-arrow-right"></i> Explore More
+                </a>
+            </div>
+
+            <div class="contact-info">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <strong>Call Any Time</strong>
+                    <p style="margin: 0;">+61 2345 678 990</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section class="events" id="event">
+        <div class="section-title">
+            <h2>Event Schedule</h2>
+        </div>
+        <div class="events-grid">
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=400&h=300&fit=crop" alt="Event">
+                    <div class="event-date">
+                        <span class="day">29</span>
+                        <span class="month">July</span>
+                    </div>
+                </div>
+                <div class="event-content">
+                    <h3>Manager Disapproved of the Most Recent Work.</h3>
+                    <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+                    <div class="event-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>350 5th Ave New York, NY 118 United States</span>
+                    </div>
+                    <a href="#" class="btn-primary">
+                        <i class="fas fa-arrow-right"></i> Event Details
+                    </a>
+                </div>
+            </div>
+
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=400&h=300&fit=crop" alt="Event">
+                    <div class="event-date">
+                        <span class="day">29</span>
+                        <span class="month">July</span>
+                    </div>
+                </div>
+                <div class="event-content">
+                    <h3>Manager Disapproved of the Most Recent Work.</h3>
+                    <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+                    <div class="event-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>350 5th Ave New York, NY 118 United States</span>
+                    </div>
+                    <a href="#" class="btn-primary">
+                        <i class="fas fa-arrow-right"></i> Event Details
+                    </a>
+                </div>
+            </div>
+
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&h=300&fit=crop" alt="Event">
+                    <div class="event-date">
+                        <span class="day">29</span>
+                        <span class="month">July</span>
+                    </div>
+                </div>
+                <div class="event-content">
+                    <h3>Manager Disapproved of the Most Recent Work.</h3>
+                    <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+                    <div class="event-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>350 5th Ave New York, NY 118 United States</span>
+                    </div>
+                    <a href="#" class="btn-primary">
+                        <i class="fas fa-arrow-right"></i> Event Details
+                    </a>
+                </div>
+            </div>
+
+            <div class="event-card">
+                <div class="event-image">
+                    <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=400&h=300&fit=crop" alt="Event">
+                    <div class="event-date">
+                        <span class="day">29</span>
+                        <span class="month">July</span>
+                    </div>
+                </div>
+                <div class="event-content">
+                    <h3>Manager Disapproved of the Most Recent Work.</h3>
+                    <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+                    <div class="event-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>350 5th Ave New York, NY 118 United States</span>
+                    </div>
+                    <a href="#" class="btn-primary">
+                        <i class="fas fa-arrow-right"></i> Event Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-heart"></i> Charitics</h3>
+                <p>Phasellus ultricies aliquam volutpat ullamcorper laoreet neque, a lacinia curabitur lacinia mollis</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section quick-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Our Services</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Our Blogs</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> FAQ'S</a></li>
+                    <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section recent-posts">
+                <h3>Recent Posts</h3>
+                <div class="post-item">
+                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=100&h=100&fit=crop" alt="Post">
+                    <div class="post-info">
+                        <h4>There are many vario ns of passages of</h4>
+                        <span><i class="fas fa-calendar"></i> May 12, 2025</span>
+                    </div>
+                </div>
+                <div class="post-item">
+                    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=100&h=100&fit=crop" alt="Post">
+                    <div class="post-info">
+                        <h4>There are many vario ns of passages of</h4>
+                        <span><i class="fas fa-calendar"></i> May 12, 2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-section contact-form">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> info@example.com</p>
+                <p><i class="fas fa-phone"></i> 123-456-7890</p>
+                <form>
+                    <input type="email" placeholder="Your Email Address" required>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                        <input type="checkbox" id="agree" style="width: auto; margin: 0;">
+                        <label for="agree" style="font-size: 0.9rem;">I agree with the <a href="#" style="color: var(--primary-color);">Privacy Policy</a></label>
+                    </div>
+                    <button type="submit"><i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Charitics. All rights reserved</p>
+            <div>
+                <a href="#">Terms & Conditions</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script-ahmadou.js">
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add shadow to header on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>
