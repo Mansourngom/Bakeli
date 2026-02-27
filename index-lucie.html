@@ -1,0 +1,2336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lucie Malack</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style-lucie.css"/>
+  <style>
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: #1a1a2e; background: #fff; overflow-x: hidden; }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ============================================================
+       ANIMATIONS KEYFRAMES
+    ============================================================ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-50px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(50px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.85); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-14px); }
+    }
+    @keyframes pulse-ring {
+      0%   { box-shadow: 0 0 0 0 rgba(232,87,42,.4); }
+      70%  { box-shadow: 0 0 0 16px rgba(232,87,42,0); }
+      100% { box-shadow: 0 0 0 0 rgba(232,87,42,0); }
+    }
+    @keyframes slideInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.3); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.2); }
+      70%       { transform: scale(1); }
+    }
+    @keyframes galleryScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    @keyframes rotateIn {
+      from { opacity: 0; transform: rotate(-10deg) scale(.9); }
+      to   { opacity: 1; transform: rotate(0) scale(1); }
+    }
+    @keyframes bounceBtn {
+      0%, 100% { transform: translateY(0); }
+      30%       { transform: translateY(-6px); }
+      60%       { transform: translateY(-2px); }
+    }
+
+    /* ============================================================
+       SCROLL REVEAL UTILITY
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      height: 74px;
+      background: #fff;
+      box-shadow: 0 2px 20px rgba(0,0,0,.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: box-shadow .3s;
+    }
+    .navbar.scrolled {
+      box-shadow: 0 4px 30px rgba(0,0,0,.14);
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      animation: fadeInLeft .6s ease both;
+    }
+    .logo-icon {
+      color: #e8572a;
+      font-size: 1.1rem;
+      animation: heartbeat 2s infinite;
+      display: inline-block;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      animation: slideInDown .6s ease both;
+    }
+    .nav-links > li > a {
+      font-size: .92rem;
+      font-weight: 600;
+      color: #1a1a2e;
+      padding: 8px 14px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color .25s, background .25s;
+    }
+    .nav-links > li > a:hover { color: #e8572a; background: rgba(232,87,42,.07); }
+
+    /* Dropdown */
+    .dropdown { position: relative; }
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.14);
+      min-width: 220px;
+      padding: 10px 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: opacity .25s, transform .25s;
+      z-index: 999;
+    }
+    .dropdown:hover .dropdown-menu {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+    .dropdown-menu li a {
+      display: block;
+      padding: 9px 20px;
+      font-size: .88rem;
+      color: #444;
+      transition: background .2s, color .2s, padding-left .2s;
+    }
+    .dropdown-menu li a:hover { background: rgba(232,87,42,.06); color: #e8572a; padding-left: 28px; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      animation: fadeInRight .6s ease both;
+    }
+    .nav-actions .fa-search {
+      font-size: 1rem;
+      color: #555;
+      cursor: pointer;
+      transition: color .2s, transform .2s;
+    }
+    .nav-actions .fa-search:hover { color: #e8572a; transform: scale(1.2); }
+
+    .btn-join {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-size: .88rem;
+      font-weight: 700;
+      transition: background .25s, transform .25s, box-shadow .25s;
+      animation: bounceBtn 3s infinite 2s;
+    }
+    .btn-join:hover {
+      background: #e8572a;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(232,87,42,.35);
+      animation: none;
+    }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      transition: background .2s;
+    }
+    .hamburger:hover { background: rgba(232,87,42,.08); }
+    .hamburger span {
+      display: block;
+      width: 26px;
+      height: 3px;
+      background: #1a1a2e;
+      border-radius: 3px;
+      transition: transform .35s, opacity .35s, background .2s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); background: #e8572a; }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); background: #e8572a; }
+
+    /* Mobile nav overlay */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,26,46,.97);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      overflow-y: auto;
+      padding: 80px 20px 40px;
+      opacity: 0;
+      transition: opacity .35s;
+    }
+    .mobile-nav.open {
+      display: flex;
+      opacity: 1;
+    }
+    .mobile-nav ul {
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .mobile-nav ul li a {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      padding: 14px 20px;
+      display: block;
+      border-radius: 10px;
+      transition: background .2s, color .2s;
+    }
+    .mobile-nav ul li a:hover { background: rgba(232,87,42,.15); color: #e8572a; }
+    .mobile-nav .btn-join-mobile {
+      display: inline-block;
+      margin-top: 24px;
+      background: #e8572a;
+      color: #fff;
+      padding: 14px 36px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .mobile-nav .btn-join-mobile:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(232,87,42,.4); }
+    .mobile-nav-close {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      z-index: 1001;
+      transition: color .2s, transform .2s;
+    }
+    .mobile-nav-close:hover { color: #e8572a; transform: rotate(90deg); }
+
+    /* ============================================================
+       BUTTONS COMMUNS
+    ============================================================ */
+    .btn-donate {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #e8572a;
+      color: #fff;
+      padding: 12px 26px;
+      border-radius: 30px;
+      font-size: .9rem;
+      font-weight: 700;
+      transition: background .25s, transform .25s, box-shadow .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-donate::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.25) 50%, transparent 70%);
+      background-size: 200% auto;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .btn-donate:hover {
+      background: #c94420;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 28px rgba(232,87,42,.4);
+    }
+    .btn-donate:hover::after {
+      opacity: 1;
+      animation: shimmer .8s linear;
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      padding: 80px 80px 80px;
+      min-height: 88vh;
+      background: linear-gradient(135deg, #fff8f5 0%, #fff 60%);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(232,87,42,.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-left {
+      flex: 1;
+      animation: fadeInLeft .9s ease both;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232,87,42,.1);
+      color: #e8572a;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: .85rem;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+    .hero-tag span { animation: heartbeat 2s infinite; display: inline-block; }
+
+    .hero-left h1 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #e8572a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc {
+      color: #666;
+      line-height: 1.7;
+      font-size: 1rem;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+
+    .hero-actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+
+    .donors { display: flex; align-items: center; gap: 12px; }
+    .donor-avatars { display: flex; }
+    .donor-avatars img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      margin-left: -10px;
+      object-fit: cover;
+      transition: transform .2s;
+    }
+    .donor-avatars img:first-child { margin-left: 0; }
+    .donor-avatars img:hover { transform: scale(1.15) translateY(-3px); z-index: 1; }
+    .donor-text { font-size: .85rem; color: #555; line-height: 1.4; }
+    .donor-text strong { color: #1a1a2e; font-size: 1rem; display: block; }
+
+    .hero-right {
+      flex: 1;
+      animation: zoomIn 1s ease .2s both;
+    }
+    .hero-image-wrapper {
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,.18);
+      position: relative;
+      animation: floatY 4s ease-in-out infinite;
+    }
+    .hero-image-wrapper img {
+      width: 100%;
+      height: 500px;
+      object-fit: cover;
+      transition: transform .6s;
+    }
+    .hero-image-wrapper:hover img { transform: scale(1.04); }
+
+    /* ============================================================
+       ABOUT
+    ============================================================ */
+    .about {
+      display: flex;
+      gap: 60px;
+      padding: 90px 80px;
+      background: #fff;
+      align-items: center;
+      overflow: hidden;
+    }
+    .about-left {
+      flex: 1;
+      position: relative;
+      min-height: 420px;
+    }
+    .about-paint {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(232,87,42,.08), rgba(26,26,46,.04));
+      border-radius: 24px;
+    }
+    .about-heart {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.14);
+    }
+    .about-heart img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      transition: transform .6s;
+    }
+    .about-heart:hover img { transform: scale(1.04); }
+    .about-badge {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: #e8572a;
+      color: #fff;
+      border-radius: 16px;
+      padding: 14px 20px;
+      text-align: center;
+      animation: pulse-ring 2s infinite;
+    }
+    .badge-num { font-size: 2rem; font-weight: 800; display: block; line-height: 1; }
+    .badge-text { font-size: .75rem; font-weight: 600; display: block; }
+
+    .about-right { flex: 1; }
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232,87,42,.1);
+      color: #e8572a;
+      padding: 7px 16px;
+      border-radius: 30px;
+      font-size: .82rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .about-right h2 {
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      font-weight: 800;
+      color: #1a1a2e;
+      line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .about-right h2 span { color: #e8572a; }
+    .about-desc { color: #666; line-height: 1.7; margin-bottom: 28px; }
+
+    .about-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: #f8f8f8;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 22px;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .about-feature:hover { transform: translateX(6px); box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+    .feature-icon {
+      background: #e8572a;
+      color: #fff;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .about-feature h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .about-feature p { font-size: .85rem; color: #666; }
+
+    .about-team-img {
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .about-team-img img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform .5s;
+    }
+    .about-team-img:hover img { transform: scale(1.04); }
+
+    .about-cta { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .about-phone { display: flex; align-items: center; gap: 12px; }
+    .phone-icon {
+      background: rgba(232,87,42,.12);
+      color: #e8572a;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    .about-phone span { font-size: .8rem; color: #888; display: block; }
+    .about-phone strong { font-size: .95rem; color: #1a1a2e; display: block; }
+
+    /* ============================================================
+       CAUSES
+    ============================================================ */
+    .causes {
+      padding: 90px 80px;
+      background: linear-gradient(180deg, #f9f9f9, #fff);
+      overflow: hidden;
+    }
+    .causes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .causes-header h2 {
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      font-weight: 800;
+      color: #1a1a2e;
+      margin-top: 10px;
+    }
+    .causes-header-right { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .slider-btns { display: flex; gap: 10px; }
+    .slider-btn {
+      background: #1a1a2e;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background .25s, transform .25s;
+    }
+    .slider-btn:hover { background: #e8572a; transform: scale(1.1); }
+
+    .causes-track-wrapper { overflow: hidden; }
+    .causes-track {
+      display: flex;
+      gap: 28px;
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+      will-change: transform;
+    }
+
+    .cause-card {
+      flex: 0 0 calc(33.333% - 20px);
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 30px rgba(0,0,0,.08);
+      transition: transform .35s, box-shadow .35s;
+    }
+    .cause-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0,0,0,.14); }
+
+    .cause-img { position: relative; overflow: hidden; }
+    .cause-img img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform .5s;
+    }
+    .cause-card:hover .cause-img img { transform: scale(1.07); }
+    .cause-tag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: #e8572a;
+      color: #fff;
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    .cause-progress { padding: 16px 20px 0; }
+    .progress-pct { font-size: .85rem; font-weight: 700; color: #e8572a; display: block; margin-bottom: 6px; }
+    .progress-bar { background: #eee; border-radius: 10px; height: 8px; overflow: hidden; }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #e8572a, #ff8c5a);
+      border-radius: 10px;
+      width: 0;
+      transition: width 1.4s cubic-bezier(.4,0,.2,1) .3s;
+    }
+    .progress-info { display: flex; justify-content: space-between; font-size: .78rem; color: #888; margin-top: 6px; }
+
+    .cause-body { padding: 16px 20px 22px; }
+    .cause-body h3 { font-size: 1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 10px; line-height: 1.4; }
+    .cause-body p { font-size: .85rem; color: #666; line-height: 1.6; margin-bottom: 16px; }
+
+    .btn-cause {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: .82rem;
+      font-weight: 700;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .btn-cause:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+    .btn-cause.dark { background: #1a1a2e; color: #fff; }
+    .btn-cause.orange { background: #e8572a; color: #fff; }
+
+    /* ============================================================
+       DONATE SECTION
+    ============================================================ */
+    .donate-section {
+      display: flex;
+      min-height: 480px;
+      overflow: hidden;
+    }
+    .donate-left {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    .donate-left img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s;
+    }
+    .donate-left:hover img { transform: scale(1.04); }
+    .donate-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(26,26,46,.6) 0%, rgba(26,26,46,.85) 100%);
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+    }
+    .donate-overlay h2 { font-size: 1.6rem; font-weight: 800; color: #fff; }
+    .amount-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .amount-btn {
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      border: 2px solid rgba(255,255,255,.3);
+      border-radius: 30px;
+      padding: 9px 18px;
+      font-size: .88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .25s;
+    }
+    .amount-btn:hover, .amount-btn.active {
+      background: #e8572a;
+      border-color: #e8572a;
+      transform: scale(1.08);
+    }
+    .donate-overlay input {
+      background: rgba(255,255,255,.12);
+      border: 2px solid rgba(255,255,255,.25);
+      border-radius: 10px;
+      color: #fff;
+      padding: 12px 16px;
+      font-size: .95rem;
+      outline: none;
+      width: 200px;
+      transition: border-color .2s;
+    }
+    .donate-overlay input:focus { border-color: #e8572a; }
+    .donate-overlay input::placeholder { color: rgba(255,255,255,.5); }
+    .btn-donate-now {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e8572a;
+      color: #fff;
+      padding: 13px 30px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: .92rem;
+      width: fit-content;
+      transition: background .25s, transform .25s, box-shadow .25s;
+    }
+    .btn-donate-now:hover { background: #c94420; transform: translateY(-3px); box-shadow: 0 10px 24px rgba(232,87,42,.4); }
+
+    .donate-right {
+      flex: 1;
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d2d52 100%);
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 22px;
+    }
+    .donate-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(232,87,42,.2);
+      color: #e8572a;
+      padding: 7px 16px;
+      border-radius: 30px;
+      font-size: .82rem;
+      font-weight: 700;
+      width: fit-content;
+    }
+    .donate-right h2 { font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 800; color: #fff; line-height: 1.25; }
+    .donate-progress {}
+    .progress-bar.white { background: rgba(255,255,255,.15); }
+    .progress-fill.white-fill { background: linear-gradient(90deg, #e8572a, #ff8c5a); }
+    .progress-info.light { color: rgba(255,255,255,.6); }
+    .donate-progress .progress-pct { color: #e8572a; }
+
+    /* ============================================================
+       STATS
+    ============================================================ */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      background: #e8572a;
+    }
+    .stat-item {
+      padding: 50px 24px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,.15);
+      transition: background .25s;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-item:hover { background: rgba(255,255,255,.08); }
+    .stat-circle { }
+    .stat-circle i { font-size: 2.2rem; color: rgba(255,255,255,.8); margin-bottom: 14px; display: block; }
+    .stat-circle h3 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .stat-circle p { font-size: .85rem; color: rgba(255,255,255,.75); line-height: 1.4; }
+
+    /* ============================================================
+       EVENTS
+    ============================================================ */
+    .events {
+      padding: 90px 80px;
+      background: #fff;
+    }
+    .events-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .events-header h2 { font-size: clamp(1.5rem, 3vw, 2.4rem); font-weight: 800; color: #1a1a2e; margin-top: 8px; }
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+    .event-card {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 30px rgba(0,0,0,.08);
+      background: #fff;
+      transition: transform .35s, box-shadow .35s;
+    }
+    .event-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,.14); }
+    .event-img { position: relative; overflow: hidden; }
+    .event-img img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: transform .5s;
+    }
+    .event-card:hover .event-img img { transform: scale(1.06); }
+    .event-date {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: #e8572a;
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 14px;
+      text-align: center;
+    }
+    .date-day { font-size: 1.4rem; font-weight: 800; display: block; line-height: 1; }
+    .date-month { font-size: .72rem; font-weight: 600; }
+    .event-body { padding: 22px; }
+    .event-body h3 { font-size: 1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 10px; line-height: 1.4; }
+    .event-body p { font-size: .85rem; color: #666; line-height: 1.6; margin-bottom: 14px; }
+    .event-body hr { border: none; border-top: 1px solid #eee; margin-bottom: 14px; }
+    .event-location { font-size: .82rem; color: #666; line-height: 1.5; }
+
+    /* ============================================================
+       VOLUNTEER
+    ============================================================ */
+    .volunteer {
+      display: flex;
+      gap: 60px;
+      padding: 90px 80px;
+      background: #f9f9f9;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .volunteer-left { flex: 1; min-width: 260px; }
+    .volunteer-img-frame {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,.14);
+    }
+    .volunteer-img-frame img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      transition: transform .6s;
+    }
+    .volunteer-img-frame:hover img { transform: scale(1.04); }
+
+    .volunteer-right { flex: 1.2; min-width: 280px; }
+    .volunteer-right h2 { font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 800; color: #1a1a2e; margin: 12px 0 16px; line-height: 1.25; }
+    .volunteer-desc { color: #666; line-height: 1.7; margin-bottom: 28px; }
+
+    .accordion { display: flex; flex-direction: column; gap: 12px; }
+    .accordion-item {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+      transition: box-shadow .25s;
+    }
+    .accordion-item:hover { box-shadow: 0 6px 24px rgba(0,0,0,.1); }
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: .92rem;
+      color: #1a1a2e;
+      user-select: none;
+      transition: color .2s;
+    }
+    .accordion-item.active .accordion-header { color: #e8572a; }
+    .accordion-header i { transition: transform .35s; font-size: .9rem; }
+    .accordion-item.active .accordion-header i { transform: rotate(90deg); color: #e8572a; }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s ease, padding .3s;
+      padding: 0 20px;
+    }
+    .accordion-item.active .accordion-body {
+      max-height: 200px;
+      padding: 0 20px 18px;
+    }
+    .accordion-body p { font-size: .87rem; color: #666; line-height: 1.7; }
+
+    .volunteer-extra-img {
+      flex: 0 0 200px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0,0,0,.14);
+      align-self: center;
+    }
+    .volunteer-extra-img img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: transform .5s;
+    }
+    .volunteer-extra-img:hover img { transform: scale(1.05); }
+
+    /* ============================================================
+       TEAM
+    ============================================================ */
+    .team {
+      padding: 90px 80px;
+      background: #fff;
+    }
+    .team-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .team-header h2 { font-size: clamp(1.5rem, 3vw, 2.4rem); font-weight: 800; color: #1a1a2e; margin-top: 8px; }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+    }
+    .team-card {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(0,0,0,.08);
+      background: #fff;
+      transition: transform .35s, box-shadow .35s;
+    }
+    .team-card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(0,0,0,.14); }
+    .team-img { position: relative; overflow: hidden; }
+    .team-img img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: transform .5s;
+    }
+    .team-card:hover .team-img img { transform: scale(1.06); }
+    .team-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,26,46,.75) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity .35s;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 18px;
+    }
+    .team-card:hover .team-overlay { opacity: 1; }
+    .team-socials { display: flex; gap: 10px; }
+    .team-socials a {
+      background: #fff;
+      color: #1a1a2e;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      transition: background .2s, color .2s, transform .2s;
+      transform: translateY(10px);
+    }
+    .team-card:hover .team-socials a { transform: translateY(0); }
+    .team-socials a:hover { background: #e8572a; color: #fff; }
+    .team-info { padding: 18px 20px; text-align: center; }
+    .team-info h3 { font-size: 1rem; font-weight: 700; color: #1a1a2e; }
+    .team-info p { font-size: .85rem; color: #e8572a; font-weight: 600; }
+
+    /* ============================================================
+       TESTIMONIALS
+    ============================================================ */
+    .testimonials {
+      padding: 90px 80px;
+      background: linear-gradient(135deg, #f9f9f9, #fff);
+      overflow: hidden;
+    }
+    .testimonials-header { text-align: center; margin-bottom: 50px; }
+    .testimonials-header h2 { font-size: clamp(1.5rem, 3vw, 2.4rem); font-weight: 800; color: #1a1a2e; }
+
+    .testimonials-wrapper { overflow: hidden; }
+    .testimonials-track {
+      display: flex;
+      gap: 24px;
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+    }
+
+    .testi-card {
+      flex: 0 0 calc(33.333% - 16px);
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 6px 28px rgba(0,0,0,.08);
+      transition: transform .35s, box-shadow .35s;
+    }
+    .testi-card:hover { transform: translateY(-6px); box-shadow: 0 16px 44px rgba(0,0,0,.12); }
+    .testi-stars { color: #f4c430; font-size: 1.1rem; margin-bottom: 14px; }
+    .testi-card > p { font-size: .88rem; color: #555; line-height: 1.7; margin-bottom: 20px; }
+    .testi-footer { display: flex; justify-content: space-between; align-items: center; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-author img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 3px solid #e8572a; }
+    .testi-author strong { display: block; font-size: .9rem; color: #1a1a2e; }
+    .testi-author span { font-size: .78rem; color: #888; }
+    .testi-quote { color: #e8572a; font-size: 2rem; line-height: 1; }
+
+    .testi-dots { display: flex; justify-content: center; gap: 8px; margin-top: 32px; }
+    .testi-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #ddd;
+      cursor: pointer;
+      transition: background .25s, transform .25s;
+    }
+    .testi-dot.active { background: #e8572a; transform: scale(1.3); }
+
+    /* ============================================================
+       BLOG
+    ============================================================ */
+    .blog {
+      display: flex;
+      gap: 60px;
+      padding: 90px 80px;
+      background: #fff;
+      align-items: flex-start;
+      overflow: hidden;
+    }
+    .blog-left { flex: 0 0 280px; }
+    .blog-left h2 { font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 800; color: #1a1a2e; margin: 12px 0 16px; }
+    .blog-desc { font-size: .87rem; color: #666; line-height: 1.7; margin-bottom: 24px; }
+    .blog-arrows { display: flex; gap: 10px; }
+    .blog-btn {
+      background: #1a1a2e;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: .95rem;
+      cursor: pointer;
+      transition: background .25s, transform .25s;
+    }
+    .blog-btn:hover { background: #e8572a; transform: scale(1.1); }
+
+    .blog-track-wrapper { flex: 1; overflow: hidden; }
+    .blog-track {
+      display: flex;
+      gap: 24px;
+      transition: transform .5s cubic-bezier(.4,0,.2,1);
+    }
+    .blog-card {
+      flex: 0 0 calc(50% - 12px);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 28px rgba(0,0,0,.08);
+      background: #fff;
+      transition: transform .35s, box-shadow .35s;
+    }
+    .blog-card:hover { transform: translateY(-8px); box-shadow: 0 18px 44px rgba(0,0,0,.13); }
+    .blog-img { position: relative; overflow: hidden; }
+    .blog-img img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform .5s;
+    }
+    .blog-card:hover .blog-img img { transform: scale(1.06); }
+    .blog-date {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: #e8572a;
+      color: #fff;
+      border-radius: 10px;
+      padding: 8px 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .blog-date span:first-child { font-size: 1.2rem; font-weight: 800; }
+    .blog-date span:last-child  { font-size: .7rem; }
+    .blog-meta {
+      padding: 14px 20px 0;
+      display: flex;
+      gap: 16px;
+      font-size: .78rem;
+      color: #888;
+    }
+    .blog-meta span { display: flex; align-items: center; gap: 5px; }
+    .blog-body { padding: 12px 20px 22px; }
+    .blog-body h3 { font-size: .95rem; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; line-height: 1.4; }
+    .blog-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #e8572a;
+      font-size: .85rem;
+      font-weight: 700;
+      transition: gap .2s, color .2s;
+    }
+    .blog-link:hover { gap: 10px; color: #c94420; }
+
+    /* ============================================================
+       GALLERY STRIP
+    ============================================================ */
+    .gallery-strip {
+      padding: 50px 0;
+      background: #f4f4f4;
+      overflow: hidden;
+    }
+    .gallery-track {
+      display: flex;
+      gap: 20px;
+      width: max-content;
+      animation: galleryScroll 30s linear infinite;
+    }
+    .gallery-strip:hover .gallery-track { animation-play-state: paused; }
+    .gallery-circle {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 4px solid #fff;
+      box-shadow: 0 6px 20px rgba(0,0,0,.12);
+      transition: transform .35s, box-shadow .35s;
+    }
+    .gallery-circle:hover { transform: scale(1.12) translateY(-6px); box-shadow: 0 16px 36px rgba(0,0,0,.2); }
+    .gallery-circle img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+    .gallery-circle:hover img { transform: scale(1.1); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .footer { background: #1a1a2e; color: #ccc; }
+    .footer-contact-bar {
+      background: #e8572a;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 24px 40px;
+      border-right: 1px solid rgba(255,255,255,.2);
+      transition: background .25s;
+    }
+    .contact-item:last-child { border-right: none; }
+    .contact-item:hover { background: rgba(255,255,255,.1); }
+    .contact-icon {
+      background: rgba(255,255,255,.2);
+      color: #fff;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .contact-item span { font-size: .8rem; color: rgba(255,255,255,.8); display: block; }
+    .contact-item strong { font-size: .9rem; color: #fff; font-weight: 700; }
+
+    .footer-body {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1.5fr 1.5fr;
+      gap: 50px;
+      padding: 70px 80px 50px;
+    }
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .footer-logo span { color: #e8572a; }
+    .footer-col p { font-size: .87rem; line-height: 1.7; color: #aaa; margin-bottom: 20px; }
+    .footer-col h4 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
+    .footer-underline { width: 40px; height: 3px; background: #e8572a; border-radius: 3px; margin-bottom: 18px; }
+    .footer-socials { display: flex; gap: 10px; }
+    .footer-socials a {
+      background: rgba(255,255,255,.1);
+      color: #ccc;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      transition: background .25s, color .25s, transform .25s;
+    }
+    .footer-socials a:hover { background: #e8572a; color: #fff; transform: translateY(-3px); }
+
+    .footer-links li { margin-bottom: 10px; }
+    .footer-links a {
+      color: #aaa;
+      font-size: .87rem;
+      transition: color .2s, padding-left .2s;
+    }
+    .footer-links a:hover { color: #e8572a; padding-left: 6px; }
+
+    .footer-articles { display: flex; flex-direction: column; gap: 18px; }
+    .footer-article { display: flex; gap: 14px; align-items: flex-start; }
+    .footer-article img { width: 70px; height: 60px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+    .footer-article span { font-size: .75rem; color: #888; display: block; margin-bottom: 5px; }
+    .footer-article p { font-size: .82rem; color: #aaa; line-height: 1.4; }
+
+    .footer-contact-info p { font-size: .87rem; color: #aaa; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .footer-contact-info i { color: #e8572a; }
+
+    .footer-newsletter { }
+    .newsletter-input {
+      display: flex;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 30px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .newsletter-input input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      padding: 12px 16px;
+      font-size: .87rem;
+      outline: none;
+    }
+    .newsletter-input input::placeholder { color: #888; }
+    .newsletter-input button {
+      background: #e8572a;
+      border: none;
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      border-radius: 50%;
+      margin: 4px;
+      font-size: .9rem;
+      transition: background .2s, transform .2s;
+    }
+    .newsletter-input button:hover { background: #c94420; transform: scale(1.08); }
+    .newsletter-check { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: #888; cursor: pointer; }
+    .newsletter-check input { accent-color: #e8572a; }
+    .newsletter-check a { color: #e8572a; }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 22px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: .85rem;
+      color: #888;
+    }
+    .footer-bottom-links { display: flex; gap: 24px; }
+    .footer-bottom-links a { color: #888; transition: color .2s; }
+    .footer-bottom-links a:hover { color: #e8572a; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1100px) {
+      .hero { padding: 60px 40px; gap: 40px; }
+      .about { padding: 70px 40px; gap: 40px; }
+      .causes { padding: 70px 40px; }
+      .events { padding: 70px 40px; }
+      .volunteer { padding: 70px 40px; }
+      .team { padding: 70px 40px; }
+      .testimonials { padding: 70px 40px; }
+      .blog { padding: 70px 40px; gap: 40px; }
+      .footer-body { padding: 60px 40px 40px; gap: 30px; }
+      .footer-bottom { padding: 20px 40px; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+    }
+
+    @media (max-width: 900px) {
+      .navbar { padding: 0 24px; }
+      .nav-links, .nav-actions { display: none; }
+      .hamburger { display: flex; }
+
+      .hero { flex-direction: column; padding: 50px 24px; min-height: unset; text-align: center; }
+      .hero-actions { justify-content: center; }
+      .hero-image-wrapper img { height: 320px; }
+
+      .about { flex-direction: column; padding: 60px 24px; }
+      .about-left { min-height: 300px; }
+      .about-heart img { height: 300px; }
+
+      .causes { padding: 60px 24px; }
+      .cause-card { flex: 0 0 calc(80vw); }
+
+      .donate-section { flex-direction: column; }
+      .donate-right { padding: 40px 24px; }
+
+      .events { padding: 60px 24px; }
+      .events-grid { grid-template-columns: 1fr; }
+
+      .volunteer { flex-direction: column; padding: 60px 24px; }
+      .volunteer-extra-img { display: none; }
+
+      .team { padding: 60px 24px; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .testimonials { padding: 60px 24px; }
+      .testi-card { flex: 0 0 calc(85vw); }
+
+      .blog { flex-direction: column; padding: 60px 24px; }
+      .blog-left { flex: unset; }
+      .blog-card { flex: 0 0 calc(80vw); }
+
+      .footer-body { grid-template-columns: 1fr 1fr; padding: 50px 24px 30px; }
+      .footer-contact-bar { flex-direction: column; }
+      .contact-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,.15); padding: 18px 24px; }
+      .footer-bottom { padding: 18px 24px; flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-left h1 { font-size: 1.8rem; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .footer-body { grid-template-columns: 1fr; }
+      .causes-header { flex-direction: column; align-items: flex-start; }
+      .events-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <span class="mobile-nav-close" id="mobileNavClose"><i class="fas fa-times"></i></span>
+  <ul>
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="#">À propos</a></li>
+    <li><a href="service.html">Service</a></li>
+    <li><a href="project.html">Projet</a></li>
+    <li><a href="team.html">Équipe</a></li>
+    <li><a href="pricing.html">Formule tarifaire</a></li>
+    <li><a href="donation-list.html">Donations</a></li>
+    <li><a href="event.html">Événements</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <a href="#" class="btn-join-mobile">&#187; Rejoignez-nous</a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+  <div class="logo">
+    <span class="logo-icon">&#10084;</span> Lucia
+  </div>
+
+  <ul class="nav-links">
+    <li class="dropdown">
+      <a href="#">Maison <i class="fas fa-chevron-down"></i></a>
+      <ul class="dropdown-menu">
+        <li><a href="index.html">Accueil 1</a></li>
+        <li><a href="home-2.html">Accueil 2</a></li>
+      </ul>
+    </li>
+    <li><a href="#">À propos</a></li>
+    <li class="dropdown">
+      <a href="#">Pages <i class="fas fa-chevron-down"></i></a>
+      <ul class="dropdown-menu">
+        <li><a href="service.html">Service</a></li>
+        <li><a href="service-details.html">Détails du service</a></li>
+        <li><a href="project.html">Projet</a></li>
+        <li><a href="project-details.html">Détails du projet</a></li>
+        <li><a href="team.html">Équipe</a></li>
+        <li><a href="team-details.html">Détails des membres</a></li>
+        <li><a href="pricing.html">Formule tarifaire</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="404.html">404</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a href="#">Donation <i class="fas fa-chevron-down"></i></a>
+      <ul class="dropdown-menu">
+        <li><a href="donation-list.html">Liste des dons</a></li>
+        <li><a href="donation-details.html">Détails du don</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a href="#">Événement <i class="fas fa-chevron-down"></i></a>
+      <ul class="dropdown-menu">
+        <li><a href="event.html">Événement</a></li>
+        <li><a href="event-details.html">Détails de l'événement</a></li>
+      </ul>
+    </li>
+    <li class="dropdown">
+      <a href="#">Blog <i class="fas fa-chevron-down"></i></a>
+      <ul class="dropdown-menu">
+        <li><a href="blog.html">Blogs</a></li>
+        <li><a href="blog-2.html">Mise en page Blogs 2</a></li>
+        <li><a href="blog-details.html">Détails du blog</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+
+  <div class="nav-actions">
+    <i class="fas fa-search"></i>
+    <a href="#" class="btn-join">&#187; Rejoignez-nous</a>
+  </div>
+
+  <!-- Hamburger -->
+  <div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left reveal-left">
+    <p class="hero-tag"><span>&#10084;</span> Changeons le monde ensemble</p>
+    <h1>Lucie malack</h1>
+    <p class="hero-desc">developeur web et mobile </p>
+    <div class="hero-actions">
+      <a href="#" class="btn-donate">&#187; Faire un don</a>
+      <div class="donors">
+        <div class="donor-avatars">
+          <img src="https://i.pravatar.cc/40?img=1" alt="donor"/>
+          <img src="https://i.pravatar.cc/40?img=2" alt="donor"/>
+          <img src="https://i.pravatar.cc/40?img=3" alt="donor"/>
+        </div>
+        <div class="donor-text"><strong>8M</strong> Donateurs actifs</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right reveal-right">
+    <div class="hero-image-wrapper">
+      <img src="https://media.gettyimages.com/id/1450788989/fr/photo/portrait-dune-femme-daffaires-africaine-heureuse-tenant-une-tablette-num%C3%A9rique-dans-le.jpg?s=2048x2048&w=gi&k=20&c=-vT-IJ5CN3zmmK1jiLlh276FJ9nyiznEZyuLqEAZG_g=" alt="hero"/>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-left reveal-left">
+    <div class="about-paint"></div>
+    <div class="about-heart">
+      <img src="https://www.shutterstock.com/shutterstock/photos/2615486177/display_1500/stock-photo-make-it-a-real-arabian-kuwaiti-woman-photo-with-the-angel-hejabi-2615486177.jpg" alt="donation"/>
+      <div class="about-badge">
+        <span class="badge-num">25+</span>
+        <span class="badge-text">Years Of Experience</span>
+      </div>
+    </div>
+  </div>
+  <div class="about-right reveal-right">
+    <p class="section-tag"><span>&#10084;</span> Pourquoi nous sommes les meilleurs</p>
+    <h2>Nous nous efforçons d'être les <span>meilleurs</span></h2>
+    <p class="about-desc">Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit. Des organisations à but non lucratif du monde entier postulent et nous rejoignent pour accéder à davantage de financement.</p>
+    <div class="about-feature">
+      <div class="feature-icon"><i class="fas fa-hands-holding-heart"></i></div>
+      <div>
+        <h3>Commencez à aider l'équipe</h3>
+        <p><i class="fas fa-check-circle" style="color:#e8572a"></i> Il existe de nombreuses variantes de résolution</p>
+      </div>
+    </div>
+    <div class="about-team-img">
+      <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80" alt="équipe"/>
+    </div>
+    <div class="about-cta">
+      <a href="#" class="btn-donate">&#187; Explorez davantage</a>
+      <div class="about-phone">
+        <div class="phone-icon"><i class="fas fa-phone"></i></div>
+        <div>
+          <span>Appelez à tout moment</span>
+          <strong>+221 77 115 82 31</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAUSES -->
+<section class="causes">
+  <div class="causes-header reveal">
+    <div class="causes-header-left">
+      <p class="section-tag">&#10084; Aidez-nous et faites un don</p>
+      <h2>Inspirer et aider à un meilleur style de vie</h2>
+    </div>
+    <div class="causes-header-right">
+      <div class="donors">
+        <div class="donor-avatars">
+          <img src="https://i.pinimg.com/736x/de/f4/a7/def4a773f649fe240dd14a3a7bcb01a8.jpg" alt="donor"/>
+          <img src="https://i.pravatar.cc/40?img=2" alt="donor"/>
+          <img src="https://i.pravatar.cc/40?img=3" alt="donor"/>
+        </div>
+        <div class="donor-text"><strong>8.M</strong> Donateurs actifs</div>
+      </div>
+      <div class="slider-btns">
+        <button class="slider-btn" id="prevBtn"><i class="fas fa-arrow-left"></i></button>
+        <button class="slider-btn" id="nextBtn"><i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="causes-track-wrapper">
+    <div class="causes-track" id="causesTrack">
+      <div class="cause-card">
+        <div class="cause-img">
+          <img src="https://www.shutterstock.com/image-photo/successful-happy-african-american-business-260nw-2652992843.jpg" alt="cause"/>
+          <span class="cause-tag">Aliments</span>
+        </div>
+        <div class="cause-progress">
+          <span class="progress-pct">90%</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:0" data-width="90%"></div></div>
+          <div class="progress-info"><span>Montant récolté : 25 000 $</span><span>Objectif : 30 000 $</span></div>
+        </div>
+        <div class="cause-body">
+          <h3>Des vies sont tuées pour les enfants dans les peuples sud-africains</h3>
+          <p>Nous travaillons ensemble pour faire une différence durable, en aidant les gens. Avec bienveillance et dévouement.</p>
+          <a href="#" class="btn-cause dark">Faites un don maintenant <i class="fas fa-arrow-up-right-from-square"></i></a>
+        </div>
+      </div>
+      <div class="cause-card">
+        <div class="cause-img">
+          <img src="https://images.unsplash.com/photo-1578357078586-491adf1aa5ba?w=500&q=80" alt="cause"/>
+          <span class="cause-tag">Aliments</span>
+        </div>
+        <div class="cause-progress">
+          <span class="progress-pct">95%</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:0" data-width="95%"></div></div>
+          <div class="progress-info"><span>Montant récolté : 25 000 $</span><span>Objectif : 30 000 $</span></div>
+        </div>
+        <div class="cause-body">
+          <h3>Des vies sont tuées pour les enfants dans les peuples sud-africains</h3>
+          <p>Nous travaillons ensemble pour faire une différence durable, en aidant les gens.</p>
+          <a href="#" class="btn-cause orange">Faites un don maintenant <i class="fas fa-arrow-up-right-from-square"></i></a>
+        </div>
+      </div>
+      <div class="cause-card">
+        <div class="cause-img">
+          <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=500&q=80" alt="cause"/>
+          <span class="cause-tag">Aliments</span>
+        </div>
+        <div class="cause-progress">
+          <span class="progress-pct">50%</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:0" data-width="50%"></div></div>
+          <div class="progress-info"><span>Montant récolté : 25 000 $</span><span>Objectif : 30 000 $</span></div>
+        </div>
+        <div class="cause-body">
+          <h3>Des vies sont tuées pour les enfants dans les peuples sud-africains</h3>
+          <p>Nous travaillons ensemble pour faire une différence durable, en aidant les gens.</p>
+          <a href="#" class="btn-cause dark">Faites un don maintenant <i class="fas fa-arrow-up-right-from-square"></i></a>
+        </div>
+      </div>
+      <div class="cause-card">
+        <div class="cause-img">
+          <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&q=80" alt="cause"/>
+          <span class="cause-tag">Éducation</span>
+        </div>
+        <div class="cause-progress">
+          <span class="progress-pct">64%</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:0" data-width="64%"></div></div>
+          <div class="progress-info"><span>Montant récolté : 18 000 $</span><span>Objectif : 28 000 $</span></div>
+        </div>
+        <div class="cause-body">
+          <h3>Des vies sont tuées pour les enfants dans les peuples sud-africains</h3>
+          <p>Nous travaillons ensemble pour faire une différence durable, en aidant les gens.</p>
+          <a href="#" class="btn-cause orange">Faites un don maintenant <i class="fas fa-arrow-up-right-from-square"></i></a>
+        </div>
+      </div>
+      <div class="cause-card">
+        <div class="cause-img">
+          <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=500&q=80" alt="cause"/>
+          <span class="cause-tag">Santé</span>
+        </div>
+        <div class="cause-progress">
+          <span class="progress-pct">72%</span>
+          <div class="progress-bar"><div class="progress-fill" style="width:0" data-width="72%"></div></div>
+          <div class="progress-info"><span>Montant récolté : 22 000 $</span><span>Objectif : 30 000 $</span></div>
+        </div>
+        <div class="cause-body">
+          <h3>Des vies sont tuées pour les enfants dans les peuples sud-africains</h3>
+          <p>Nous travaillons ensemble pour faire une différence durable, en aidant les gens.</p>
+          <a href="#" class="btn-cause dark">Faites un don maintenant <i class="fas fa-arrow-up-right-from-square"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE SECTION -->
+<section class="donate-section">
+  <div class="donate-left reveal-left">
+    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=700&q=80" alt="donation"/>
+    <div class="donate-overlay">
+      <h2>Faites un don maintenant, chers clients</h2>
+      <div class="amount-btns">
+        <button class="amount-btn active" onclick="selectAmount(this,10)">10 $</button>
+        <button class="amount-btn" onclick="selectAmount(this,20)">20 $</button>
+        <button class="amount-btn" onclick="selectAmount(this,30)">30 $</button>
+        <button class="amount-btn" onclick="selectAmount(this,40)">40 $</button>
+        <button class="amount-btn" onclick="selectAmount(this,50)">50 $</button>
+      </div>
+      <input type="number" id="customAmount" value="10" placeholder="Montant personnalisé"/>
+      <a href="#" class="btn-donate-now"><span>&#187;</span> Faites un don maintenant</a>
+    </div>
+  </div>
+  <div class="donate-right reveal-right">
+    <p class="donate-tag">&#10084; Faites un don maintenant</p>
+    <h2>Soutenez les enfants en collectant de précieux dons</h2>
+    <div class="donate-progress">
+      <span class="progress-pct">64%</span>
+      <div class="progress-bar white"><div class="progress-fill white-fill" style="width:0" data-width="64%"></div></div>
+      <div class="progress-info light">
+        <span>Montant récolté : 25 000 $</span>
+        <span>Objectif : 30 000 $</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stat-item reveal">
+    <div class="stat-circle">
+      <i class="fas fa-users"></i>
+      <h3>260+</h3>
+      <p>Enfants totalement heureux</p>
+    </div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-circle">
+      <i class="fas fa-hands-helping"></i>
+      <h3>110+</h3>
+      <p>Total Notre bénévole</p>
+    </div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-circle">
+      <i class="fas fa-box-open"></i>
+      <h3>190+</h3>
+      <p>Nos produits et cadeaux</p>
+    </div>
+  </div>
+  <div class="stat-item reveal">
+    <div class="stat-circle">
+      <i class="fas fa-handshake"></i>
+      <h3>Plus de 560</h3>
+      <p>Donateur mondial</p>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="events">
+  <div class="events-header reveal">
+    <div>
+      <p class="section-tag">&#10084; Événements à venir</p>
+      <h2>Informations sur les événements de Charitics</h2>
+    </div>
+    <a href="#" class="btn-donate">&#187; Explorez davantage</a>
+  </div>
+  <div class="events-grid">
+    <div class="event-card reveal">
+      <div class="event-img">
+        <img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=400&q=80" alt="event"/>
+        <div class="event-date"><span class="date-day">29</span><span class="date-month">Juillet</span></div>
+      </div>
+      <div class="event-body">
+        <h3>Le responsable a désapprouvé le travail le plus récent.</h3>
+        <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+        <hr/>
+        <p class="event-location"><strong style="color:#e8572a">Lieu</strong><br/>350 5e Avenue, New York, NY 118, États-Unis</p>
+        <a href="#" class="btn-donate" style="margin-top:16px; display:inline-flex;">&#187; Détails de l'événement</a>
+      </div>
+    </div>
+    <div class="event-card reveal">
+      <div class="event-img">
+        <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&q=80" alt="event"/>
+        <div class="event-date"><span class="date-day">29</span><span class="date-month">Juillet</span></div>
+      </div>
+      <div class="event-body">
+        <h3>Le responsable a désapprouvé le travail le plus récent.</h3>
+        <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+        <hr/>
+        <p class="event-location"><strong style="color:#e8572a">Lieu</strong><br/>350 5e Avenue, New York, NY 118, États-Unis</p>
+        <a href="#" class="btn-donate" style="margin-top:16px; display:inline-flex;">&#187; Détails de l'événement</a>
+      </div>
+    </div>
+    <div class="event-card reveal">
+      <div class="event-img">
+        <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=400&q=80" alt="event"/>
+        <div class="event-date"><span class="date-day">29</span><span class="date-month">Juillet</span></div>
+      </div>
+      <div class="event-body">
+        <h3>Le responsable a désapprouvé le travail le plus récent.</h3>
+        <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+        <hr/>
+        <p class="event-location"><strong style="color:#e8572a">Lieu</strong><br/>350 5e Avenue, New York, NY 118, États-Unis</p>
+        <a href="#" class="btn-donate" style="margin-top:16px; display:inline-flex;">&#187; Détails de l'événement</a>
+      </div>
+    </div>
+    <div class="event-card reveal">
+      <div class="event-img">
+        <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=400&q=80" alt="event"/>
+        <div class="event-date"><span class="date-day">29</span><span class="date-month">Juillet</span></div>
+      </div>
+      <div class="event-body">
+        <h3>Le responsable a désapprouvé le travail le plus récent.</h3>
+        <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernaturaut</p>
+        <hr/>
+        <p class="event-location"><strong style="color:#e8572a">Lieu</strong><br/>350 5e Avenue, New York, NY 118, États-Unis</p>
+        <a href="#" class="btn-donate" style="margin-top:16px; display:inline-flex;">&#187; Détails de l'événement</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOLUNTEER -->
+<section class="volunteer">
+  <div class="volunteer-left reveal-left">
+    <div class="volunteer-img-frame">
+      <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80" alt="bénévoles"/>
+    </div>
+  </div>
+  <div class="volunteer-right reveal">
+    <p class="section-tag" style="color:#e8572a">&#10084; Rejoignez-nous</p>
+    <h2>Pourquoi avons-nous besoin de vous ? Devenez bénévole !</h2>
+    <p class="volunteer-desc">Nous aidons les entreprises à développer des stratégies efficaces en matière de responsabilité sociale des entreprises, d'octroi de subventions et d'engagement des employés.</p>
+    <div class="accordion">
+      <div class="accordion-item active">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span>Reconnaissance et accomplissement</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="accordion-body">
+          <p>Aonsectetur adipiscing elit. Enéen scelerisque augue vitae consequat. Juisque eget congue velit in cursus les sodales the turpis eusmod quis sapien. Un-learning s'adresse aux étudiants, aux professionnels et à toute personne intéressée.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span>Pourquoi devenir bénévole chez nous ?</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="accordion-body">
+          <p>Nous offrons une expérience enrichissante et significative pour tous nos bénévoles. Rejoignez une communauté engagée et faites la différence.</p>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" onclick="toggleAccordion(this)">
+          <span>Faites partie d'une communauté</span>
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="accordion-body">
+          <p>Intégrez une communauté mondiale de personnes partageant les mêmes idées et travaillant ensemble pour un monde meilleur.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="volunteer-extra-img reveal-right">
+    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80" alt="africain"/>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team">
+  <div class="team-header reveal">
+    <div>
+      <p class="section-tag">&#10084; Notre équipe</p>
+      <h2>Des professionnels du droit compétents, à votre service.</h2>
+    </div>
+    <a href="#" class="btn-donate">&#187; Rejoignez-nous</a>
+  </div>
+  <div class="team-grid">
+    <div class="team-card reveal">
+      <div class="team-img">
+        <img src="https://www.shutterstock.com/image-photo/successful-happy-african-american-business-260nw-2652992843.jpg" alt="membre"/>
+        <div class="team-overlay">
+          <div class="team-socials">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="team-info"><h3>Eva Ngom</h3><p>Avocat</p></div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-img">
+        <img src="https://img.freepik.com/photos-premium/sourire-affaires-portrait-femme-noire-au-bureau-nuit-bras-croises-pour-demarrage-carriere-travail-succes-du-leadership-travailleuse-attitude-esprit-heureuse-fierte-entreprise_590464-159566.jpg" alt="membre"/>
+        <div class="team-overlay">
+          <div class="team-socials">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="team-info"><h3>josephina Diop</h3><p>Avocat</p></div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-img">
+        <img src="https://i.pinimg.com/736x/02/73/7d/02737dae3b687c83238e7e6ee676c70e.jpg" alt="membre"/>
+        <div class="team-overlay">
+          <div class="team-socials">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="team-info"><h3>Marina dosackay</h3><p>Avocat</p></div>
+    </div>
+    <div class="team-card reveal">
+      <div class="team-img">
+        <img src="https://i.pinimg.com/736x/f8/6c/9c/f86c9c22d4fb31dbda4dda0d27b8de7a.jpg" alt="membre"/>
+        <div class="team-overlay">
+          <div class="team-socials">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="team-info"><h3>Mansour Ngom</h3><p>Avocat</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-header reveal">
+    <p class="section-tag" style="color:#e8572a; display:inline-flex; margin: 0 auto 12px;">&#10084; Témoignages</p>
+    <h2>De quoi parlent-ils ? Charités</h2>
+  </div>
+  <div class="testimonials-wrapper">
+    <div class="testimonials-track" id="testiTrack">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★☆</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=1" alt=""/><div><strong>Esther Howard</strong><span>Concepteur web</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★☆</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=5" alt=""/><div><strong>James Martin</strong><span>Bénévole</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=9" alt=""/><div><strong>Sofia Diallo</strong><span>Donatrice</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★☆</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=12" alt=""/><div><strong>Moussa Koné</strong><span>Partenaire</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=16" alt=""/><div><strong>Amina Traoré</strong><span>Conceptrice</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★☆</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=20" alt=""/><div><strong>Lucas Bernard</strong><span>Bénévole</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=25" alt=""/><div><strong>Fatou Sarr</strong><span>Donatrice</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★☆</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=30" alt=""/><div><strong>Omar Diop</strong><span>Partenaire</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=35" alt=""/><div><strong>Marie Dupont</strong><span>Conceptrice web</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★☆</div>
+        <p>Présentez-vous à lacus a velit tincidunt aliquam a eget urna. Sed ullamcorper tristique nisl at pharetra turpis accumsan et etiam eu sollicitudin eros.</p>
+        <div class="testi-footer">
+          <div class="testi-author"><img src="https://i.pravatar.cc/50?img=40" alt=""/><div><strong>Ibrahima Fall</strong><span>Bénévole</span></div></div>
+          <span class="testi-quote">&#10078;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="testi-dots" id="testiDots"></div>
+</section>
+
+<!-- BLOG -->
+<section class="blog">
+  <div class="blog-left reveal-left">
+    <p class="section-tag">&#10084; Dernier article de blog</p>
+    <h2>Lisez nos dernières actualités</h2>
+    <p class="blog-desc">Nous aidons les entreprises à développer des stratégies efficaces en matière de responsabilité sociale des entreprises.</p>
+    <div class="blog-arrows">
+      <button class="blog-btn" id="blogPrev"><i class="fas fa-arrow-left"></i></button>
+      <button class="blog-btn" id="blogNext"><i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+  <div class="blog-track-wrapper">
+    <div class="blog-track" id="blogTrack">
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=500&q=80" alt="blog"/>
+          <div class="blog-date"><span>15</span><span>Déc</span></div>
+        </div>
+        <div class="blog-meta"><span><i class="fas fa-user"></i> Par l'administrateur</span><span><i class="fas fa-tag"></i> Donation</span></div>
+        <div class="blog-body"><h3>Ne considérez pas les océans comme des poubelles universelles.</h3><a href="#" class="blog-link">En savoir plus <i class="fas fa-arrow-right"></i></a></div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=500&q=80" alt="blog"/>
+          <div class="blog-date"><span>15</span><span>Déc</span></div>
+        </div>
+        <div class="blog-meta"><span><i class="fas fa-user"></i> Par l'administrateur</span><span><i class="fas fa-tag"></i> Donation</span></div>
+        <div class="blog-body"><h3>Le soleil et le sable rendent les plages magnifiques.</h3><a href="#" class="blog-link">En savoir plus <i class="fas fa-arrow-right"></i></a></div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=500&q=80" alt="blog"/>
+          <div class="blog-date"><span>15</span><span>Déc</span></div>
+        </div>
+        <div class="blog-meta"><span><i class="fas fa-user"></i> Par l'administrateur</span><span><i class="fas fa-tag"></i> Donation</span></div>
+        <div class="blog-body"><h3>Le soleil et le sable rendent les plages magnifiques.</h3><a href="#" class="blog-link">En savoir plus <i class="fas fa-arrow-right"></i></a></div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=500&q=80" alt="blog"/>
+          <div class="blog-date"><span>15</span><span>Déc</span></div>
+        </div>
+        <div class="blog-meta"><span><i class="fas fa-user"></i> Par l'administrateur</span><span><i class="fas fa-tag"></i> Donation</span></div>
+        <div class="blog-body"><h3>Ensemble pour un monde meilleur et plus solidaire.</h3><a href="#" class="blog-link">En savoir plus <i class="fas fa-arrow-right"></i></a></div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-img">
+          <img src="https://images.unsplash.com/photo-1578357078586-491adf1aa5ba?w=500&q=80" alt="blog"/>
+          <div class="blog-date"><span>15</span><span>Déc</span></div>
+        </div>
+        <div class="blog-meta"><span><i class="fas fa-user"></i> Par l'administrateur</span><span><i class="fas fa-tag"></i> Donation</span></div>
+        <div class="blog-body"><h3>Aidez les enfants à avoir un avenir meilleur.</h3><a href="#" class="blog-link">En savoir plus <i class="fas fa-arrow-right"></i></a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY STRIP -->
+<section class="gallery-strip">
+  <div class="gallery-track" id="galleryTrack">
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1578357078586-491adf1aa5ba?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1578357078586-491adf1aa5ba?w=300&q=80" alt=""/></div>
+    <div class="gallery-circle"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=300&q=80" alt=""/></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-contact-bar">
+    <div class="contact-item">
+      <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+      <div><span>Adresse</span><strong>4648 Rocky Road Philadelphie PA, 1920</strong></div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+      <div><span>Envoyer un e-mail</span><strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5c35323a331c392439312c3039723f3331">[email&#160;protected]</a></strong></div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon"><i class="fas fa-phone"></i></div>
+      <div><span>Appelez les urgences</span><strong>+88 0123 654 99</strong></div>
+    </div>
+  </div>
+  <div class="footer-body">
+    <div class="footer-col">
+      <div class="footer-logo"><span>&#10084;</span> Charitics</div>
+      <p>Phasellus ultricies aliquam volutpat ullamcorper laoreet neque, un lacinia curabitur lacinia mollis</p>
+      <div class="footer-socials">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Liens rapides</h4>
+      <div class="footer-underline"></div>
+      <ul class="footer-links">
+        <li><a href="#">&#187; À propos de nous</a></li>
+        <li><a href="#">&#187; Nos services</a></li>
+        <li><a href="#">&#187; Nos blogs</a></li>
+        <li><a href="#">&#187; FAQ</a></li>
+        <li><a href="#">&#187; Contactez-nous</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Articles récents</h4>
+      <div class="footer-underline"></div>
+      <div class="footer-articles">
+        <div class="footer-article">
+          <img src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?w=100&q=80" alt="article"/>
+          <div><span><i class="far fa-calendar"></i> 12 mai 2025</span><p>Il existe de nombreuses variantes de passages de</p></div>
+        </div>
+        <div class="footer-article">
+          <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=100&q=80" alt="article"/>
+          <div><span><i class="far fa-calendar"></i> 12 mai 2025</span><p>Il existe de nombreuses variantes de passages de</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Contactez-nous</h4>
+      <div class="footer-underline"></div>
+      <div class="footer-contact-info">
+        <p><i class="fas fa-envelope"></i> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="442d2a222b04213c25293428216a272b29">[email&#160;protected]</a></p>
+        <p><i class="fas fa-phone"></i> 123-456-7890</p>
+      </div>
+      <div class="footer-newsletter">
+        <div class="newsletter-input">
+          <input type="email" placeholder="Votre adresse e-mail"/>
+          <button><i class="fas fa-arrow-right"></i></button>
+        </div>
+        <label class="newsletter-check">
+          <input type="checkbox"/>
+          <span>Je suis d'accord avec le <a href="#">politique de confidentialité</a></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Charitics. Tous droits réservés.</p>
+    <div class="footer-bottom-links">
+      <a href="#">Conditions générales</a>
+      <a href="#">politique de confidentialité</a>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="script-lucie.js"></script><script>
+// ============================================================
+// HAMBURGER MENU
+// ============================================================
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+const mobileNavClose = document.getElementById('mobileNavClose');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileNav.classList.toggle('open');
+  document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+});
+mobileNavClose.addEventListener('click', () => {
+  hamburger.classList.remove('open');
+  mobileNav.classList.remove('open');
+  document.body.style.overflow = '';
+});
+
+// ============================================================
+// NAVBAR SCROLL SHADOW
+// ============================================================
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Animate progress bars inside
+      e.target.querySelectorAll('.progress-fill[data-width]').forEach(bar => {
+        bar.style.width = bar.dataset.width;
+      });
+    }
+  });
+}, { threshold: 0.12 });
+
+revealEls.forEach(el => observer.observe(el));
+
+// Also animate progress bars that are already in view
+document.querySelectorAll('.progress-fill[data-width]').forEach(bar => {
+  const sectionObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.dataset.width;
+        sectionObs.disconnect();
+      }
+    });
+  }, { threshold: 0.2 });
+  sectionObs.observe(bar);
+});
+
+// ============================================================
+// CAUSES SLIDER - autoplay + manual buttons
+// ============================================================
+(function() {
+  const track = document.getElementById('causesTrack');
+  const cards = track.querySelectorAll('.cause-card');
+  let current = 0;
+  let autoTimer = null;
+  const visible = () => window.innerWidth < 900 ? 1 : (window.innerWidth < 1100 ? 2 : 3);
+
+  function getCardWidth() {
+    const w = track.parentElement.clientWidth;
+    const v = visible();
+    const gap = 28;
+    return (w - gap * (v - 1)) / v + gap;
+  }
+
+  function updateSlider() {
+    const max = cards.length - visible();
+    current = Math.max(0, Math.min(current, max));
+    track.style.transform = `translateX(-${current * getCardWidth()}px)`;
+  }
+
+  function next() { const max = cards.length - visible(); current = current >= max ? 0 : current + 1; updateSlider(); }
+  function prev() { const max = cards.length - visible(); current = current <= 0 ? max : current - 1; updateSlider(); }
+
+  function startAuto() { autoTimer = setInterval(next, 3000); }
+  function stopAuto() { clearInterval(autoTimer); }
+
+  document.getElementById('nextBtn').addEventListener('click', () => { stopAuto(); next(); startAuto(); });
+  document.getElementById('prevBtn').addEventListener('click', () => { stopAuto(); prev(); startAuto(); });
+  track.addEventListener('mouseenter', stopAuto);
+  track.addEventListener('mouseleave', startAuto);
+  window.addEventListener('resize', updateSlider);
+
+  startAuto();
+})();
+
+// ============================================================
+// TESTIMONIALS SLIDER (auto + dots) - FIXED
+// ============================================================
+(function() {
+  const track = document.getElementById('testiTrack');
+  const cards = Array.from(track.querySelectorAll('.testi-card'));
+  const dotsContainer = document.getElementById('testiDots');
+  let current = 0;
+  let autoTimer = null;
+
+  const visibleCount = () => window.innerWidth < 900 ? 1 : 3;
+  const totalPages = () => Math.ceil(cards.length / visibleCount());
+
+  function buildDots() {
+    dotsContainer.innerHTML = '';
+    for (let i = 0; i < totalPages(); i++) {
+      const d = document.createElement('div');
+      d.className = 'testi-dot' + (i === 0 ? ' active' : '');
+      d.addEventListener('click', () => { goTo(i); resetAuto(); });
+      dotsContainer.appendChild(d);
+    }
+  }
+
+  function getPageWidth() {
+    const w = track.parentElement.clientWidth;
+    const v = visibleCount();
+    const gap = 24;
+    return (w - gap * (v - 1)) / v * v + gap * (v - 1) + 24; // full page width
+  }
+
+  function goTo(idx) {
+    const t = totalPages();
+    // Clamp to valid range, no wrapping past end
+    current = Math.max(0, Math.min(idx, t - 1));
+    const v = visibleCount();
+    const gap = 24;
+    const cardW = (track.parentElement.clientWidth - gap * (v - 1)) / v;
+    const offset = current * v * (cardW + gap);
+    track.style.transform = `translateX(-${offset}px)`;
+    dotsContainer.querySelectorAll('.testi-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  function resetAuto() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = setInterval(() => {
+      const next = current >= totalPages() - 1 ? 0 : current + 1;
+      goTo(next);
+    }, 4000);
+  }
+
+  buildDots();
+  resetAuto();
+  track.addEventListener('mouseenter', () => { if (autoTimer) clearInterval(autoTimer); });
+  track.addEventListener('mouseleave', resetAuto);
+  window.addEventListener('resize', () => { buildDots(); goTo(current); });
+})();
+
+// ============================================================
+// BLOG SLIDER
+// ============================================================
+(function() {
+  const track = document.getElementById('blogTrack');
+  const cards = track.querySelectorAll('.blog-card');
+  let current = 0;
+  const visible = () => window.innerWidth < 900 ? 1 : 2;
+
+  function getW() {
+    const w = track.parentElement.clientWidth;
+    const v = visible();
+    return (w - 24 * (v - 1)) / v + 24;
+  }
+
+  function update() {
+    const max = cards.length - visible();
+    current = Math.min(current, max);
+    track.style.transform = `translateX(-${current * getW()}px)`;
+  }
+
+  document.getElementById('blogNext').addEventListener('click', () => {
+    const max = cards.length - visible();
+    current = current >= max ? 0 : current + 1;
+    update();
+  });
+  document.getElementById('blogPrev').addEventListener('click', () => {
+    const max = cards.length - visible();
+    current = current <= 0 ? max : current - 1;
+    update();
+  });
+  window.addEventListener('resize', update);
+})();
+
+// ============================================================
+// DONATE AMOUNT BUTTONS
+// ============================================================
+function selectAmount(btn, amount) {
+  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('customAmount').value = amount;
+}
+
+// ============================================================
+// ACCORDION
+// ============================================================
+function toggleAccordion(header) {
+  const item = header.parentElement;
+  const isActive = item.classList.contains('active');
+  document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
+  if (!isActive) item.classList.add('active');
+}
+
+// ============================================================
+// STAGGERED CARD ANIMATIONS ON LOAD
+// ============================================================
+window.addEventListener('load', () => {
+  document.querySelectorAll('.team-card, .event-card, .cause-card').forEach((card, i) => {
+    card.style.transitionDelay = i * 0.08 + 's';
+  });
+});
+</script>
+</body>
+</html>
